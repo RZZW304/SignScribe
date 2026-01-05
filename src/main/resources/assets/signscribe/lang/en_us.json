@@ -3,5 +3,7 @@
   "key.signscribe.prev": "Previous Sign Page",
   "key.signscribe.open": "Open SignScribe GUI",
   "key.signscribe.stop": "Stop SignScribe Session",
+  "key.signscribe.undo": "Undo Last Placement",
+  "key.signscribe.redo": "Redo Last Undo",
   "category.signscribe": "SignScribe"
 }

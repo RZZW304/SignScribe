@@ -87,6 +87,8 @@ public class SignPlacementHandler {
 				SignTextRenderer.applyTextToSign(signEntity, currentPage);
 			}
 			
+			UndoRedoManager.getInstance().recordPlacement(player, world, pos, currentPage);
+			
 			if (config.showSuccessMessage) {
 				player.sendMessage(Text.literal("§a[SignScribe] Sign placed (" + (placement.getCurrentPageIndex() + 1) + "/" + placement.getTotalSigns() + ")"), true);
 			}

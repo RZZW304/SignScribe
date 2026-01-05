@@ -2,6 +2,7 @@ package com.signscribe.client;
 
 import com.signscribe.SignScribeConfig;
 import com.signscribe.SignScribePlacement;
+import com.signscribe.UndoRedoManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
@@ -16,6 +17,8 @@ public class SignScribeKeybinds {
 	public KeyBinding prevPageKey;
 	public KeyBinding openGuiKey;
 	public KeyBinding stopSessionKey;
+	public KeyBinding undoKey;
+	public KeyBinding redoKey;
 	
 	public static SignScribeKeybinds getInstance() {
 		if (INSTANCE == null) {
@@ -46,6 +49,18 @@ public class SignScribeKeybinds {
 		stopSessionKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 			"key.signscribe.stop",
 			GLFW.GLFW_KEY_ESCAPE,
+			"category.signscribe"
+		));
+		
+		undoKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+			"key.signscribe.undo",
+			GLFW.GLFW_KEY_Z,
+			"category.signscribe"
+		));
+		
+		redoKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+			"key.signscribe.redo",
+			GLFW.GLFW_KEY_Y,
 			"category.signscribe"
 		));
 		
@@ -97,6 +112,26 @@ public class SignScribeKeybinds {
 					showMessage(client, "§a[SignScribe] Session stopped");
 				} catch (Exception e) {
 					showMessage(client, "§c[SignScribe] Error: " + e.getMessage());
+				}
+			}
+		}
+		
+		while (undoKey.wasPressed()) {
+			if (client.player != null && client.player.world != null) {
+				if (UndoRedoManager.getInstance().canUndo(client.player)) {
+					UndoRedoManager.getInstance().undo(client.player, client.player.world);
+				} else {
+					showMessage(client, "§c[SignScribe] Nothing to undo");
+				}
+			}
+		}
+		
+		while (redoKey.wasPressed()) {
+			if (client.player != null && client.player.world != null) {
+				if (UndoRedoManager.getInstance().canRedo(client.player)) {
+					UndoRedoManager.getInstance().redo(client.player, client.player.world);
+				} else {
+					showMessage(client, "§c[SignScribe] Nothing to redo");
 				}
 			}
 		}
