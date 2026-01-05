@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 public class SignScribeConfig {
 	private static SignScribeConfig INSTANCE;
 
+	public boolean enabled = true;
 	public boolean autoAdvance = true;
 	public int autoAdvanceDelay = 20;
 	public boolean showPreview = true;

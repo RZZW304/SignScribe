@@ -1,6 +1,7 @@
 package com.signscribe.command;
 
 import com.signscribe.SignScribePlacement;
+import com.signscribe.SignScribeConfig;
 import com.signscribe.gui.SignScribeFileScreen;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -12,6 +13,20 @@ public class SignScribeCommands {
 	public static void register() {
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("signscribe")
+				.then(ClientCommandManager.literal("on")
+					.executes(context -> {
+						SignScribeConfig.getInstance().enabled = true;
+						context.getSource().sendFeedback(Text.of("§a[SignScribe] Mod enabled"));
+						return 1;
+					})
+				)
+				.then(ClientCommandManager.literal("off")
+					.executes(context -> {
+						SignScribeConfig.getInstance().enabled = false;
+						context.getSource().sendFeedback(Text.of("§c[SignScribe] Mod disabled"));
+						return 1;
+					})
+				)
 				.then(ClientCommandManager.literal("open")
 					.executes(context -> {
 						if (context.getSource().getClient() != null) {
@@ -28,6 +43,23 @@ public class SignScribeCommands {
 						try {
 							SignScribePlacement.getInstance().advanceToNextPage();
 							context.getSource().sendFeedback(Text.of("Advanced to next page"));
+							return 1;
+						} catch (IOException e) {
+							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
+							return 0;
+						}
+					})
+				)
+				.then(ClientCommandManager.literal("sign")
+					.executes(context -> {
+						SignScribePlacement placement = SignScribePlacement.getInstance();
+						if (!placement.hasSession()) {
+							context.getSource().sendError(Text.of("No active session"));
+							return 0;
+						}
+						try {
+							placement.goToPage(placement.getCurrentPageIndex());
+							context.getSource().sendFeedback(Text.of("§aJumped to current sign"));
 							return 1;
 						} catch (IOException e) {
 							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
