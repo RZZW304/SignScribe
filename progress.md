@@ -371,10 +371,11 @@ The project consists of two main components:
 ## SignScribe Implementation Plan (Fabric 1.21.x)
 
 ### Phase 1: Project Setup
-- [ ] Set up Fabric development environment for 1.21.x
-- [ ] Create basic mod structure
-- [ ] Add ModMenu integration
-- [ ] Set up build configuration (gradle)
+- [x] Set up Fabric development environment for 1.21.x
+- [x] Create basic mod structure
+- [x] Add ModMenu integration
+- [x] Set up build configuration (gradle)
+- [ ] Test basic mod loads in Minecraft
 
 ### Phase 2: File Format & Parsing
 - [ ] Implement .txth file format parser
@@ -580,7 +581,8 @@ public class SignScribeClient implements ClientModInitializer {
 - File format specifications defined (.txth)
 - External formatter app requirements documented
 - Implementation plan for both components created
-- Ready to begin development
+- Phase 1: Project Setup completed (except testing)
+- Ready to begin Phase 2: File Format & Parsing
 
 ### User Requirements Confirmed
 ✓ Text formatting: Pre-formatted .txth files, 14 chars/line, 4 lines/sign
@@ -612,5 +614,70 @@ public class SignScribeClient implements ClientModInitializer {
 
 ---
 
+## Phase 1 Progress: Project Setup
+
+### Completed Tasks
+✅ Set up Gradle/Loom configuration for Fabric 1.21.x
+✅ Created project structure
+✅ Added Fabric API dependencies (0.100.4+1.21)
+✅ Added ModMenu dependency (11.0.1)
+✅ Created fabric.mod.json with mod metadata
+✅ Created signscribe.mixins.json for mixin configuration
+✅ Created SignScribeMod.java (ModInitializer)
+✅ Created SignScribeClient.java (ClientModInitializer)
+✅ Created ModMenuIntegration.java for ModMenu API
+✅ Added LICENSE file (ALL RIGHTS RESERVED)
+✅ Created README.md with basic information
+✅ Created .gitignore for project
+✅ Set up Gradle wrapper (gradlew, gradlew.bat)
+✅ Configured gradle.properties with version settings
+
+### Project Structure
+```
+SignScribe/
+├── build.gradle                 # Gradle build configuration
+├── gradle.properties           # Project properties (versions, etc.)
+├── settings.gradle              # Gradle settings
+├── gradlew                      # Unix Gradle wrapper script
+├── gradlew.bat                  # Windows Gradle wrapper script
+├── LICENSE                      # License file
+├── README.md                    # Project documentation
+├── .gitignore                   # Git ignore file
+├── gradle/
+│   └── wrapper/
+│       └── gradle-wrapper.properties
+├── src/main/
+│   ├── java/com/signscribe/
+│   │   ├── SignScribeMod.java           # Main mod class
+│   │   ├── SignScribeClient.java        # Client entry point
+│   │   └── integration/
+│   │       └── ModMenuIntegration.java  # ModMenu API
+│   └── resources/
+│       ├── fabric.mod.json              # Fabric mod metadata
+│       └── signscribe.mixins.json       # Mixin configuration
+├── progress.md                  # Project progress documentation
+└── TODO.md                      # Task list
+```
+
+### Configuration Details
+- **Minecraft Version:** 1.21
+- **Yarn Mappings:** 1.21+build.1
+- **Fabric Loader:** 0.15.11
+- **Fabric API:** 0.100.4+1.21
+- **ModMenu:** 11.0.1
+- **Java Version:** 21
+- **Mod Version:** 1.0.0
+- **Mod ID:** signscribe
+
+### Remaining Phase 1 Tasks
+- [ ] Test basic mod loads in Minecraft
+  - Requires Minecraft 1.21 installation
+  - Requires Fabric Loader
+  - Requires Fabric API
+  - Requires running gradlew genSources
+  - Requires testing in-game
+
+---
+
 **Last Updated:** January 5, 2026
-**Status:** Requirements gathering complete, implementation plan ready, ready to begin development
+**Status:** Phase 1 nearly complete (needs testing), ready to begin Phase 2

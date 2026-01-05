@@ -10,12 +10,12 @@
 ## FABRIC MOD IMPLEMENTATION
 
 ### Phase 1: Project Setup
-- [ ] Set up Fabric development environment for 1.21.x
-- [ ] Create basic mod structure (mod.json, fabric.mod.json)
-- [ ] Set up Gradle/loom configuration
-- [ ] Add Fabric API dependencies
-- [ ] Add ModMenu dependency
-- [ ] Create mod entry points (ModInitializer, ClientModInitializer)
+- [x] Set up Fabric development environment for 1.21.x
+- [x] Create basic mod structure (mod.json, fabric.mod.json)
+- [x] Set up Gradle/loom configuration
+- [x] Add Fabric API dependencies
+- [x] Add ModMenu dependency
+- [x] Create mod entry points (ModInitializer, ClientModInitializer)
 - [ ] Test basic mod loads in Minecraft
 
 ### Phase 2: File Format & Parsing (Core)
@@ -248,21 +248,23 @@
 - [x] Requirements gathering complete
 - [x] Implementation plan created
 - [x] TODO list created
-- [ ] Ready to start Phase 1 (Fabric mod setup)
+- [x] Phase 1: Project Setup (partial - needs testing)
+- [ ] Ready to start Phase 2 (File Format & Parsing)
 
 ---
 
 ## NEXT STEPS
-1. Set up Fabric development environment
-2. Create basic mod structure
-3. Implement .txth file parser
-4. Test parser with sample files
-5. Implement sign placement logic
-6. Create file path GUI
-7. Implement commands
-8. Test entire flow
-9. Start external formatter app
-10. Build and release both components
+1. Test basic mod loads in Minecraft (complete Phase 1)
+2. Implement .txth file parser (Phase 2)
+3. Test parser with sample files
+4. Implement global state management (Phase 3)
+5. Implement sign placement logic (Phase 4)
+6. Create file path GUI (Phase 5)
+7. Implement commands (Phase 6)
+8. Create ModMenu configuration screen (Phase 5)
+9. Test entire flow
+10. Start external formatter app
+11. Build and release both components
 
 **Total Tasks:** ~120 tasks
 **Estimated Timeline:** 4-6 weeks for beginner level (5/100)

@@ -1,0 +1,48 @@
+{
+	"schemaVersion": 1,
+	"id": "signscribe",
+	"version": "${version}",
+	"name": "SignScribe",
+	"description": "Easily copy stories from .txth files onto signs",
+	"authors": [
+		"YourName"
+	],
+	"contact": {
+		"homepage": "https://github.com/yourusername/SignScribe",
+		"sources": "https://github.com/yourusername/SignScribe",
+		"issues": "https://github.com/yourusername/SignScribe/issues"
+	},
+	"license": "ALL RIGHTS RESERVED",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.signscribe.SignScribeMod"
+		],
+		"client": [
+			"com.signscribe.SignScribeClient"
+		],
+		"modmenu": [
+			"com.signscribe.integration.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		"signscribe.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": ">=11.0.0"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/yourdiscord",
+				"modmenu.kofi": "https://ko-fi.com/yourkofi"
+			}
+		}
+	}
+}
