@@ -3,6 +3,7 @@ package com.signscribe.command;
 import com.signscribe.SignScribePlacement;
 import com.signscribe.SignScribeConfig;
 import com.signscribe.gui.SignScribeFileScreen;
+import com.signscribe.gui.SignScribePathScreen;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.text.Text;
@@ -32,9 +33,9 @@ public class SignScribeCommands {
 						if (context.getSource().getClient() != null) {
 							try {
 								context.getSource().getClient().setScreen(
-									new SignScribeFileScreen(null)
+									new SignScribePathScreen(null)
 								);
-								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file selection..."));
+								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file loader..."));
 								return 1;
 							} catch (Exception e) {
 								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));

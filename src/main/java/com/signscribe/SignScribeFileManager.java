@@ -43,12 +43,29 @@ public class SignScribeFileManager {
 	}
 
 	public String loadTxthFile(String filename) throws IOException {
-		Path txthDir = getTxthDirectory();
-		Path file = txthDir.resolve(filename);
+		Path file = resolveTxthPath(filename);
 		if (!Files.exists(file)) {
 			throw new IOException("File not found: " + filename);
 		}
 		return Files.readString(file);
+	}
+
+	public Path resolveTxthPath(String path) {
+		path = path.trim();
+
+		if (path.startsWith("config/") || path.startsWith("./config/") || path.startsWith(".\\config\\")) {
+			return configDir.resolve(path.replaceFirst("^config(/|\\\\)", ""));
+		}
+
+		if (path.startsWith("/")) {
+			return configDir.resolve(path.substring(1));
+		}
+
+		if (path.contains("/") || path.contains("\\")) {
+			return configDir.resolve(path);
+		}
+
+		return getTxthDirectory().resolve(path);
 	}
 
 	public List<String> listTxthFiles() throws IOException {
