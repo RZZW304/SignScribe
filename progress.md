@@ -12,29 +12,58 @@
 ## Requirements Analysis
 
 ### User Requirements
-1. **Text Formatting:** Automatic text wrapping and formatting for signs
-   - Wrap text at 15 characters without chopping words
-   - Chop words >15 characters every 15 chars
-   - 4 lines per sign (15x4 = 60 chars total)
-   - Handle newlines properly (start new line after newline)
-   - No manual formatting needed - mod handles everything
+1. **Text Formatting:** Pre-formatted .txth files
+    - 14 characters per line (not 15)
+    - 4 lines per sign (14x4 = 56 chars total)
+    - Sign format: SIGN1:, SIGN2:, etc.
+    - Each sign block must have exactly 4 lines
+    - Empty lines without {BLANk} = ERROR
+    - Intentional blank lines marked with {BLANk}
+    - No auto-wrapping - mod expects pre-formatted files
 
 2. **ModMenu GUI:**
-   - Toggle mod on/off
-   - Keybind configuration
+    - Full configuration screen (duplicates command functionality)
+    - Toggle mod on/off
+    - Select starting sign number
+    - Paste file path for .txth files
+    - Display current status: enabled/disabled, current sign number, total signs loaded
 
 3. **File Handling:**
-   - Load one txt file at a time
-   - Simple directory selection
+    - Load one .txth file at a time
+    - Custom GUI for pasting file path
+    - File format: .txth extension with SIGN1:, SIGN2: format
+    - Remember last loaded file path between game restarts
+    - Remember last placed sign position while file is loaded
+    - Clear saved position when file is unloaded
 
 4. **Sign Placement:**
-   - Right-click sign → auto-apply next page
-   - Auto-advance to next page on subsequent sign placements
-   - Seamless placement experience
+    - Right-click sign → auto-apply current sign text
+    - Auto-advance to next sign on subsequent sign placements
+    - Default to last placed sign if available, otherwise SIGN1
+    - Support all sign types (oak, birch, spruce, etc.)
+    - No hotkey to cancel placement mode
+    - Error if sign number > total signs: "There are only [number] signs"
 
-5. **Target Audience:** Regular players creating stories on signs (like a hobbit writing thousands of signs)
+5. **External Formatter App:**
+    - Desktop GUI application
+    - Modern programming language (Python recommended)
+    - Converts normal .txt files to .txth format
+    - Auto-wraps text to 14 characters per line
+    - Handles SIGN1:, SIGN2: format with 4-line blocks
+    - Replaces intentional blank lines with {BLANk}
+    - Creates .txth files ready for mod use
 
-6. **No Compatibility Needed:** No special server-side compatibility required
+6. **Error Handling:**
+    - Show errors and refuse to load malformed files
+    - Specify which sign and line has errors
+    - Validate: exactly 4 lines per sign, exactly 14 chars per line
+    - Validate: no empty lines without {BLANk}
+
+7. **Target Audience:** Regular players creating stories on signs (like a hobbit writing thousands of signs)
+
+8. **No Compatibility Needed:** No special server-side compatibility required
+
+9. **License:** ALL RIGHTS RESERVED - Private use only
 
 ---
 
@@ -226,21 +255,24 @@ public void toStrings(String[] sign) {
 
 ---
 
-### 4. Command System (SignStoryCommand.java)
+### 4. Command System
 
-**Registered command:** `/SignStory`
+**Registered command:** `/signscribe`
 
 **Subcommands:**
-1. **load** (l) - Open file picker to load text file
-2. **select** (s) - Select specific page by number
-3. **toggle** (t) - Toggle between SignPicture and SignStory mode
+1. **on** - Enable the mod
+2. **off** - Disable the mod
+3. **sign <number>** - Set starting sign number
+   - If number > total signs: "There are only [number] signs"
+   - Default: last placed sign, or 1 if none
+4. **load** - Open file path GUI to load .txth file
 
 **Usage Examples:**
 ```
-/SignStory load           # Opens file picker
-/SignStory select 3       # Select page 3
-/SignStory select         # Show total pages and usage
-/SignStory toggle         # Toggle mode
+/signscribe on              # Enable the mod
+/signscribe off             # Disable the mod
+/signscribe sign 5          # Start from sign 5
+/signscribe load            # Open file path GUI
 ```
 
 ---
@@ -319,6 +351,23 @@ Place sign → Update current page index
 
 ---
 
+## SignScribe Project Components
+
+The project consists of two main components:
+
+### 1. Fabric Mod (SignScribe)
+- Platform: Fabric 1.21.x
+- Language: Java
+- Purpose: Minecraft mod for applying pre-formatted text to signs
+
+### 2. External Formatter App
+- Type: Desktop GUI application
+- Language: Python (modern, cross-platform)
+- Purpose: Convert normal .txt files to .txth format
+- Output: .txth files with proper sign formatting
+
+---
+
 ## SignScribe Implementation Plan (Fabric 1.21.x)
 
 ### Phase 1: Project Setup
@@ -327,58 +376,145 @@ Place sign → Update current page index
 - [ ] Add ModMenu integration
 - [ ] Set up build configuration (gradle)
 
-### Phase 2: Core Text Processing
-- [ ] Implement text splitting algorithm (WordUtil.Splitter equivalent)
-- [ ] Implement file loading utility
-- [ ] Handle word wrapping (max 15 chars/line)
-- [ ] Handle long word chopping (>15 chars)
-- [ ] Handle newline properly
-- [ ] Pad lines to exactly 15 characters
-- [ ] Combine 4 lines into sign pages (60 chars)
+### Phase 2: File Format & Parsing
+- [ ] Implement .txth file format parser
+- [ ] Parse SIGN1:, SIGN2: blocks
+- [ ] Validate exactly 4 lines per sign block
+- [ ] Validate exactly 14 characters per line
+- [ ] Detect empty lines without {BLANk} (error)
+- [ ] Convert {BLANk} to actual blank lines
+- [ ] Store sign pages in List<String>
+- [ ] Count total signs in file
 
-### Phase 3: Data Storage
+### Phase 3: Data Storage & Configuration
 - [ ] Create global state management
-- [ ] Store loaded text pages (List<String>)
-- [ ] Track current page index
-- [ ] Implement configuration storage
+- [ ] Store loaded .txth file path
+- [ ] Store sign pages (List<String>)
+- [ ] Track current sign number
+- [ ] Track total signs loaded
+- [ ] Implement configuration storage (last file, last sign, enabled state)
+- [ ] Clear saved position when file is unloaded
 
 ### Phase 4: Sign Placement Logic
-- [ ] Hook into sign placement event
+- [ ] Hook into sign placement event (all sign types)
 - [ ] Cancel default sign edit GUI
-- [ ] Apply text to sign TileEntity
+- [ ] Apply pre-formatted text to sign TileEntity (exactly as parsed)
 - [ ] Send update packet to server
-- [ ] Auto-advance to next page
+- [ ] Auto-advance to next sign
+- [ ] Save current sign number to config
 - [ ] Display progress notifications
 
 ### Phase 5: GUI Implementation
-- [ ] File picker GUI (using Fabric API)
+- [ ] File path GUI (text field for pasting file path)
+- [ ] Load .txth file button
 - [ ] ModMenu configuration screen
-- [ ] Toggle on/off switch
-- [ ] Keybind configuration
-- [ ] Load file button
+  - Toggle mod on/off switch
+  - Select starting sign number input
+  - Paste file path text field
+  - Load file button
+  - Display current status (enabled, current sign, total signs)
 
 ### Phase 6: Commands
-- [ ] Implement `/signscribe load` command
-- [ ] Implement `/signscribe select <page>` command
-- [ ] Implement `/signscribe toggle` command
+- [ ] Implement `/signscribe on` command
+- [ ] Implement `/signscribe off` command
+- [ ] Implement `/signscribe sign <number>` command
+  - Validate number ≤ total signs
+  - Show error if invalid: "There are only [number] signs"
+  - Default to last placed sign or 1
+- [ ] Implement `/signscribe load` command (opens file path GUI)
 
 ### Phase 7: Testing & Polish
-- [ ] Test text formatting edge cases
+- [ ] Test .txth file parsing (all formats)
+- [ ] Test error detection (empty lines, wrong line count)
 - [ ] Test sign placement flow
-- [ ] Test page progression
-- [ ] Add user feedback (chat notifications)
-- [ ] Test with various txt file formats
+- [ ] Test sign progression
+- [ ] Test persistence (remember last sign, clear on unload)
+- [ ] Test ModMenu configuration
+- [ ] Test commands
+- [ ] Add user feedback (chat notifications, error messages)
+- [ ] Test with all sign types
 
 ---
 
-## Key Technical Considerations for Fabric
+## External Formatter App Implementation Plan (Python)
 
-### Fabric API Differences from Forge
-- Use Fabric's `ClientTickEvent` instead of FML events
-- Use `ClientCommandRegistrationCallback` for commands
-- Use `ScreenEvents` for GUI events
-- Use `ClientBlockEntityEvents` for sign events
-- Different packet handling system (Fabric's networking API)
+### Phase 1: App Setup
+- [ ] Set up Python project with modern GUI framework (PyQt6/Tkinter)
+- [ ] Create basic window structure
+- [ ] Set up build configuration (PyInstaller for .exe)
+
+### Phase 2: File Input
+- [ ] Open .txt file dialog
+- [ ] Read file contents
+- [ ] Display text preview
+
+### Phase 3: Text Processing
+- [ ] Implement text wrapping algorithm (14 chars/line)
+- [ ] Handle long words (>14 chars)
+- [ ] Handle newlines properly (preserve intentional line breaks)
+- [ ] Replace intentional blank lines with {BLANk}
+
+### Phase 4: Format Conversion
+- [ ] Split text into 4-line blocks (56 chars per sign)
+- [ ] Add SIGN1:, SIGN2: prefixes
+- [ ] Validate line lengths (exactly 14 chars)
+- [ ] Pad lines with spaces to exactly 14 chars
+- [ ] Detect and flag intentional blank lines
+
+### Phase 5: GUI Features
+- [ ] Input text file selection
+- [ ] Output .txth file selection
+- [ ] Preview formatted output
+- [ ] Convert button
+- [ ] Progress indicator
+- [ ] Error display (invalid lines, formatting issues)
+
+### Phase 6: Output Generation
+- [ ] Write .txth file with proper format
+- [ ] Save file to selected location
+- [ ] Success notification
+
+### Phase 7: Testing
+- [ ] Test with simple text (5-10 signs)
+- [ ] Test with long text requiring auto-wrap
+- [ ] Test edge cases (very long words, empty lines, special characters)
+- [ ] Test {BLANk} replacement
+- [ ] Test line padding (exactly 14 chars)
+- [ ] Test with special characters
+- [ ] Build .exe and test
+
+---
+
+## Key Technical Considerations for Fabric Mod
+
+### File Format (.txth)
+```
+SIGN1:
+[14 chars      ]  <- Line 1
+[14 chars      ]  <- Line 2
+[14 chars      ]  <- Line 3
+[14 chars      ]  <- Line 4
+SIGN2:
+[14 chars      ]  <- Line 1
+{BLANk}           <- Line 2 (intentional blank)
+[14 chars      ]  <- Line 3
+[14 chars      ]  <- Line 4
+```
+
+### Validation Rules
+- Each sign must have exactly 4 lines
+- Each line must have exactly 14 characters
+- Empty lines (without {BLANk}) cause errors
+- {BLANk} is converted to actual blank lines
+- SIGN1:, SIGN2: markers separate signs
+
+### Fabric API Components Needed
+- Use Fabric's `ClientCommandRegistrationCallback` for commands
+- Use `ClientBlockEntityEvents` for sign interaction
+- Use `ModMenu` integration for configuration screen
+- Use `ConfigApi` for configuration storage
+- Use `ScreenEvents` for custom GUI
+- Use `FileWatcher` (optional) for file monitoring
 
 ### Fabric Mod Structure
 ```java
@@ -398,6 +534,35 @@ public class SignScribeClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // Register client-side components
+        // Commands
+        // GUI
+        // Sign events
+        // Config loading
+    }
+}
+```
+
+---
+
+## External Formatter App Technology Stack
+
+### Recommended Stack
+- **Language:** Python 3.11+
+- **GUI Framework:** PyQt6 or Tkinter
+- **Packaging:** PyInstaller (for .exe generation)
+- **Platform:** Cross-platform (Windows, Linux, macOS)
+
+### Why Python?
+- Modern, easy to read and maintain
+- Excellent text processing capabilities
+- Cross-platform GUI frameworks
+- Easy to package as .exe
+- Fast development cycle
+```java
+public class SignScribeClient implements ClientModInitializer {
+    @Override
+    public void onInitializeClient() {
+        // Register client-side components
         // Keybinds
         // GUI
         // Render events
@@ -410,25 +575,42 @@ public class SignScribeClient implements ClientModInitializer {
 ## Notes & Next Steps
 
 ### Current Status
-- Project requirements clarified
+- Project requirements clarified and updated
 - SignStory reference implementation analyzed
-- Implementation patterns documented
+- File format specifications defined (.txth)
+- External formatter app requirements documented
+- Implementation plan for both components created
 - Ready to begin development
 
 ### User Requirements Confirmed
-✓ Text formatting: Auto-wrap, chop long words, handle newlines  
-✓ ModMenu: Toggle on/off, keybinds  
-✓ File handling: Load one txt file at a time  
-✓ Sign placement: Auto-apply, auto-advance  
-✓ Platform: Fabric 1.21.x  
-✓ No compatibility needed  
+✓ Text formatting: Pre-formatted .txth files, 14 chars/line, 4 lines/sign
+✓ File format: SIGN1:, SIGN2: blocks with validation
+✓ External app: Python GUI for .txt → .txth conversion
+✓ ModMenu: Full configuration screen (duplicate commands)
+✓ Commands: on/off, sign <number>, load
+✓ File handling: Load one .txth file at a time, remember last placed sign
+✓ Sign placement: Auto-apply, auto-advance, support all sign types
+✓ Persistence: Saved in config, cleared when file unloaded
+✓ Platform: Fabric 1.21.x
+✓ License: ALL RIGHTS RESERVED - Private use only
+✓ Error handling: Show errors, specify sign/line, refuse to load
 
 ### Development Level
 - Experience: 5/100 (beginner)
-- Approach: Start simple, build incrementally
-- Focus: Core text processing and sign placement first
+- Approach: Start with Fabric mod, build formatter app second
+- Focus: Core file parsing and sign placement first, then GUI and commands
+
+### Key Changes from Original Plan
+- Changed from 15 to 14 characters per line (56 vs 60 chars total)
+- Changed from auto-wrap to pre-formatted .txth files
+- Added external formatter app for file conversion
+- Changed from txt to .txth file extension
+- Added {BLANk} for intentional blank lines
+- Added strict validation (4 lines, 14 chars each)
+- Changed persistence behavior (clear on file unload)
+- Added ModMenu full configuration screen
 
 ---
 
-**Last Updated:** January 4, 2026  
-**Status:** Requirements gathering complete, ready to begin implementation
+**Last Updated:** January 5, 2026
+**Status:** Requirements gathering complete, implementation plan ready, ready to begin development
