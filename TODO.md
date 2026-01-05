@@ -19,17 +19,17 @@
 - [ ] Test basic mod loads in Minecraft
 
 ### Phase 2: File Format & Parsing (Core)
-- [ ] 🔴 Create .txth file parser class
-- [ ] 🔴 Parse SIGN1:, SIGN2: markers
-- [ ] 🔴 Extract 4-line blocks per sign
-- [ ] 🔴 Validate exactly 4 lines per sign block
-- [ ] 🔴 Validate exactly 14 characters per line
-- [ ] 🔴 Detect empty lines without {BLANk} (error)
-- [ ] 🔴 Convert {BLANk} to actual blank lines
-- [ ] 🔴 Store sign pages in List<String>
-- [ ] 🔴 Count total signs in file
-- [ ] 🔴 Test parser with valid .txth file
-- [ ] 🔴 Test parser with invalid files (empty lines, wrong counts)
+- [x] 🔴 Create .txth file parser class
+- [x] 🔴 Parse SIGN1:, SIGN2: markers
+- [x] 🔴 Extract 4-line blocks per sign
+- [x] 🔴 Validate exactly 4 lines per sign block
+- [x] 🔴 Validate exactly 14 characters per line
+- [x] 🔴 Detect empty lines without {BLANk} (error)
+- [x] 🔴 Convert {BLANk} to actual blank lines
+- [x] 🔴 Store sign pages in List<String>
+- [x] 🔴 Count total signs in file
+- [x] 🔴 Test parser with valid .txth file
+- [x] 🔴 Test parser with invalid files (empty lines, wrong counts)
 
 ### Phase 3: Data Storage & Configuration (Core)
 - [ ] 🔴 Create global state management class
@@ -249,22 +249,21 @@
 - [x] Implementation plan created
 - [x] TODO list created
 - [x] Phase 1: Project Setup (partial - needs testing)
-- [ ] Ready to start Phase 2 (File Format & Parsing)
+- [x] Phase 2: File Format & Parsing (complete)
+- [ ] Ready to start Phase 3 (Data Storage & Configuration)
 
 ---
 
 ## NEXT STEPS
 1. Test basic mod loads in Minecraft (complete Phase 1)
-2. Implement .txth file parser (Phase 2)
-3. Test parser with sample files
-4. Implement global state management (Phase 3)
-5. Implement sign placement logic (Phase 4)
-6. Create file path GUI (Phase 5)
-7. Implement commands (Phase 6)
-8. Create ModMenu configuration screen (Phase 5)
-9. Test entire flow
-10. Start external formatter app
-11. Build and release both components
+2. Implement global state management (Phase 3)
+3. Implement sign placement logic (Phase 4)
+4. Create file path GUI (Phase 5)
+5. Implement commands (Phase 6)
+6. Create ModMenu configuration screen (Phase 5)
+7. Test entire flow
+8. Start external formatter app
+9. Build and release both components
 
 **Total Tasks:** ~120 tasks
 **Estimated Timeline:** 4-6 weeks for beginner level (5/100)

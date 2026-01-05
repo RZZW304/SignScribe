@@ -378,14 +378,14 @@ The project consists of two main components:
 - [ ] Test basic mod loads in Minecraft
 
 ### Phase 2: File Format & Parsing
-- [ ] Implement .txth file format parser
-- [ ] Parse SIGN1:, SIGN2: blocks
-- [ ] Validate exactly 4 lines per sign block
-- [ ] Validate exactly 14 characters per line
-- [ ] Detect empty lines without {BLANk} (error)
-- [ ] Convert {BLANk} to actual blank lines
-- [ ] Store sign pages in List<String>
-- [ ] Count total signs in file
+- [x] Implement .txth file format parser
+- [x] Parse SIGN1:, SIGN2: blocks
+- [x] Validate exactly 4 lines per sign block
+- [x] Validate exactly 14 characters per line
+- [x] Detect empty lines without {BLANk} (error)
+- [x] Convert {BLANk} to actual blank lines
+- [x] Store sign pages in List<String>
+- [x] Count total signs in file
 
 ### Phase 3: Data Storage & Configuration
 - [ ] Create global state management
@@ -582,7 +582,8 @@ public class SignScribeClient implements ClientModInitializer {
 - External formatter app requirements documented
 - Implementation plan for both components created
 - Phase 1: Project Setup completed (except testing)
-- Ready to begin Phase 2: File Format & Parsing
+- Phase 2: File Format & Parsing completed
+- Ready to begin Phase 3: Data Storage & Configuration
 
 ### User Requirements Confirmed
 ✓ Text formatting: Pre-formatted .txth files, 14 chars/line, 4 lines/sign
@@ -679,5 +680,71 @@ SignScribe/
 
 ---
 
+## Phase 2 Progress: File Format & Parsing
+
+### Completed Tasks
+✅ Created SignPage class for data model (4 lines per sign)
+✅ Created TxthParseException for error handling (with sign/line tracking)
+✅ Implemented TxthFileParser class with full parsing logic
+✅ Parse SIGN1:, SIGN2: markers using regex pattern
+✅ Extract and validate 4-line blocks per sign
+✅ Validate exactly 14 characters per line
+✅ Detect empty lines without {BLANk} marker
+✅ Convert {BLANk} to actual blank lines
+✅ Store sign pages in List<SignPage>
+✅ Track total signs in file
+✅ Created test files (valid, invalid-empty-lines, invalid-line-count, invalid-line-length)
+✅ Created TxthFileParserTest class with 4 test methods
+
+### Project Structure Updates
+```
+SignScribe/
+├── src/
+│   ├── main/java/com/signscribe/
+│   │   ├── SignPage.java                    # NEW: Sign data model
+│   │   ├── TxthParseException.java           # NEW: Parse exception
+│   │   ├── TxthFileParser.java              # NEW: Main parser
+│   │   └── ...
+│   └── test/java/com/signscribe/
+│       └── TxthFileParserTest.java          # NEW: Test class
+├── test-files/
+│   ├── valid.txth                            # NEW: Valid test file
+│   ├── invalid-empty-lines.txth             # NEW: Empty line test
+│   ├── invalid-line-count.txth              # NEW: Line count test
+│   └── invalid-line-length.txth             # NEW: Line length test
+└── ...
+```
+
+### Validation Rules Implemented
+- Each sign must have exactly 4 lines
+- Each line must have exactly 14 characters (unless {BLANk})
+- Empty lines cause errors (must use {BLANk})
+- Sign markers: SIGN1:, SIGN2:, etc. (auto-detected)
+- {BLANk} marker converted to actual blank lines
+
+### Error Handling
+- TxthParseException with sign number and line number
+- Detailed error messages with context
+- Examples:
+  - "Error in SIGN1 at line 2: Expected exactly 14 characters but found 0 (Empty line: \"\")"
+  - "Error in SIGN1 at line 1: Expected exactly 4 lines but found 3 (Each sign must have exactly 4 lines)"
+  - "Error in SIGN1 at line 2: Empty line detected (use {BLANk} for intentional blank lines) (Empty lines are not allowed without {BLANk} marker)"
+
+### Test Coverage
+1. Valid file parsing: 4 signs with {BLANk} markers
+2. Empty line detection: Catches empty lines without {BLANk}
+3. Line count validation: Catches signs with wrong number of lines
+4. Line length validation: Catches lines with wrong character count
+
+### Git Commits
+1. "Phase 2: Add data model classes" - SignPage, TxthParseException
+2. "Phase 2: Implement core TxthFileParser class" - Full parser implementation
+3. "Phase 2: Add test files and test class" - Test files and test suite
+
+### Remaining Phase 2 Tasks
+- None (all tasks complete)
+
+---
+
 **Last Updated:** January 5, 2026
-**Status:** Phase 1 nearly complete (needs testing), ready to begin Phase 2
+**Status:** Phase 2 complete, ready to begin Phase 3
