@@ -87,7 +87,7 @@ class UndoRedoManagerTest {
 		UndoRedoManager.getInstance().recordPlacement(
 			mockPlayer(player1Id),
 			Mockito.mock(net.minecraft.world.World.class),
-			Motito.mock(net.minecraft.util.math.BlockPos.class),
+			Mockito.mock(net.minecraft.util.math.BlockPos.class),
 			page
 		);
 		
