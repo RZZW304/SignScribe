@@ -1,7 +1,9 @@
 package com.signscribe;
 
+import com.signscribe.client.SignPreviewRenderer;
 import com.signscribe.command.SignScribeCommands;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 
@@ -24,5 +26,10 @@ public class SignScribeClient implements ClientModInitializer {
 		}
 		
 		SignScribeCommands.register();
+		SignPreviewRenderer.getInstance().register();
+		
+		HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
+			SignPreviewRenderer.getInstance().render(drawContext, tickDelta);
+		});
 	}
 }
