@@ -67,6 +67,18 @@ public class SessionTemplate {
 		return usageCount;
 	}
 
+	public void setCreatedTime(long createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public void setLastUsedTime(long lastUsedTime) {
+		this.lastUsedTime = lastUsedTime;
+	}
+
+	public void setUsageCount(int usageCount) {
+		this.usageCount = usageCount;
+	}
+
 	public void markAsUsed() {
 		this.lastUsedTime = System.currentTimeMillis();
 		this.usageCount++;
@@ -156,12 +168,9 @@ public class SessionTemplate {
 		}
 
 		SessionTemplate template = new SessionTemplate(name, description, filename, author, previewLines);
-		if (templateId != null) {
-			template.templateId = templateId;
-		}
-		template.createdTime = createdTime;
-		template.lastUsedTime = lastUsedTime;
-		template.usageCount = usageCount;
+		template.setCreatedTime(createdTime);
+		template.setLastUsedTime(lastUsedTime);
+		template.setUsageCount(usageCount);
 
 		return template;
 	}

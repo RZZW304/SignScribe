@@ -55,7 +55,6 @@ public class SessionHistoryManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return record;
 	}
 
 	public void recordSessionEnd(SessionRecord record, int signsPlaced, long duration) {
@@ -68,7 +67,7 @@ public class SessionHistoryManager {
 		}
 	}
 
-	private void loadHistory() throws IOException {
+	public void loadHistory() throws IOException {
 		if (!Files.exists(historyFile)) {
 			return;
 		}

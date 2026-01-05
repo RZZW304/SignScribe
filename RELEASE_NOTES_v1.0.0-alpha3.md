@@ -256,7 +256,7 @@ https://github.com/RZZW304/SignScribe/issues
 
 ## 📦 Installation
 
-1. Download `SignScribe-1.0.0-alpha2.jar`
+1. Download `SignScribe-1.0.0-alpha3.jar`
 2. Place in `.minecraft/mods/`
 3. Launch Minecraft 1.21 with Fabric Loader 0.15.11+
 4. Required: Fabric API 0.100.4+1.21

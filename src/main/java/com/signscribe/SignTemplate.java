@@ -58,6 +58,18 @@ public class SignTemplate {
 		return usageCount;
 	}
 
+	public void setCreatedTime(long createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public void setLastUsedTime(long lastUsedTime) {
+		this.lastUsedTime = lastUsedTime;
+	}
+
+	public void setUsageCount(int usageCount) {
+		this.usageCount = usageCount;
+	}
+
 	public void markAsUsed() {
 		this.lastUsedTime = System.currentTimeMillis();
 		this.usageCount++;

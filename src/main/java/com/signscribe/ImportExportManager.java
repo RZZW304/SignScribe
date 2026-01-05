@@ -149,15 +149,15 @@ public class ImportExportManager {
 
 					SignTemplate template = new SignTemplate(name, description, lines, author);
 
-					if (props.containsKey("createdTime")) {
-						template.createdTime = Long.parseLong(props.getProperty("createdTime"));
-					}
-					if (props.containsKey("lastUsedTime")) {
-						template.lastUsedTime = Long.parseLong(props.getProperty("lastUsedTime"));
-					}
-					if (props.containsKey("usageCount")) {
-						template.usageCount = Integer.parseInt(props.getProperty("usageCount"));
-					}
+						if (props.containsKey("createdTime")) {
+							template.setCreatedTime(Long.parseLong(props.getProperty("createdTime")));
+						}
+						if (props.containsKey("lastUsedTime")) {
+							template.setLastUsedTime(Long.parseLong(props.getProperty("lastUsedTime")));
+						}
+						if (props.containsKey("usageCount")) {
+							template.setUsageCount(Integer.parseInt(props.getProperty("usageCount")));
+						}
 
 					SignTemplateManager.getInstance().saveTemplate(template);
 				}
