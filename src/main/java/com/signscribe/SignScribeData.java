@@ -30,7 +30,7 @@ public class SignScribeData {
 		if (dataFile == null || !dataFile.toFile().exists()) {
 			return;
 		}
-		NbtCompound nbt = NbtIo.readCompressed(dataFile.toFile());
+		NbtCompound nbt = NbtIo.readCompressed(dataFile, NbtSizeTracker.ofUnlimitedBytes());
 		if (nbt == null) {
 			return;
 		}
@@ -49,7 +49,7 @@ public class SignScribeData {
 		nbt.putInt("currentPageIndex", currentPageIndex);
 		nbt.putInt("totalSigns", totalSigns);
 		nbt.putBoolean("hasActiveSession", hasActiveSession);
-		NbtIo.writeCompressed(nbt, dataFile.toFile());
+		NbtIo.writeCompressed(nbt, dataFile);
 	}
 
 	public String getCurrentTxthFile() {

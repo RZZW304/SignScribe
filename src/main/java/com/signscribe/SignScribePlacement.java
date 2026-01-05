@@ -20,8 +20,9 @@ public class SignScribePlacement {
 		SignScribeFileManager fileManager = SignScribeFileManager.getInstance();
 		SignScribeData data = SignScribeData.getInstance();
 		
-		String content = fileManager.loadTxthFile(filename);
-		signPages = TxthFileParser.parse(content);
+		java.nio.file.Path filePath = fileManager.getTxthDirectory().resolve(filename);
+		TxthFileParser parser = new TxthFileParser(filePath);
+		signPages = parser.parse();
 		
 		data.setCurrentTxthFile(filename);
 		data.setTotalSigns(signPages.size());

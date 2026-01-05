@@ -77,13 +77,13 @@ public class SignScribeFileScreen extends Screen {
 		}
 	}
 	
-	private void close() {
+	public void close() {
 		client.setScreen(parent);
 	}
 	
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		this.renderBackgroundTexture(context);
+		this.renderBackground(context, mouseX, mouseY, delta);
 		
 		context.drawCenteredTextWithShadow(
 			this.textRenderer,
