@@ -18,7 +18,7 @@ public class SignScribeCommands {
 			System.out.println("[SignScribe DEBUG] Command callback fired");
 			dispatcher.register(ClientCommandManager.literal("signscribe")
 				.executes(context -> {
-					context.getSource().sendFeedback(Text.of("§a[SignScribe] Available commands: on, off, open, next, prev, status, stop"));
+					context.getSource().sendFeedback(Text.of("§a[SignScribe] Available commands: on, off, load, next, prev, status, stop"));
 					return 1;
 				})
 				.then(ClientCommandManager.literal("on")
@@ -54,31 +54,6 @@ public class SignScribeCommands {
 							}
 						} else {
 							System.err.println("[SignScribe ERROR] Client is null in load command");
-							return 0;
-						}
-					})
-				)
-				.then(ClientCommandManager.literal("open")
-					.executes(context -> {
-						System.out.println("[SignScribe DEBUG] /signscribe open executed");
-						System.out.println("[SignScribe DEBUG] Client: " + context.getSource().getClient());
-						if (context.getSource().getClient() != null) {
-							try {
-								System.out.println("[SignScribe DEBUG] Creating SignScribePathScreen");
-								SignScribePathScreen screen = new SignScribePathScreen(null);
-								System.out.println("[SignScribe DEBUG] Screen created: " + screen);
-								context.getSource().getClient().setScreen(screen);
-								System.out.println("[SignScribe DEBUG] Screen set successfully");
-								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file loader..."));
-								return 1;
-							} catch (Exception e) {
-								System.err.println("[SignScribe ERROR] Error opening screen: " + e.getMessage());
-								e.printStackTrace();
-								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));
-								return 0;
-							}
-						} else {
-							System.err.println("[SignScribe ERROR] Client is null in open command");
 							return 0;
 						}
 					})

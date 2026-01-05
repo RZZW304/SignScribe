@@ -114,56 +114,21 @@ public class SignPlacementEventHandler {
 			System.out.println("[SignScribe DEBUG] Updating sign at: " + pos);
 			
 			MinecraftClient client = MinecraftClient.getInstance();
-			if (client.world == null) {
-				System.err.println("[SignScribe ERROR] World is null!");
+			if (client.getNetworkHandler() == null) {
+				System.err.println("[SignScribe ERROR] NetworkHandler is null!");
 				return;
 			}
 
-			var blockEntity = client.world.getBlockEntity(pos);
-			if (!(blockEntity instanceof SignBlockEntity signEntity)) {
-				System.err.println("[SignScribe ERROR] Block entity is not a SignBlockEntity!");
-				return;
-			}
-
-			System.out.println("[SignScribe DEBUG] SignBlockEntity found, attempting immutable SignText replacement");
-
-			try {
-				var frontText = signEntity.getFrontText();
-				var newText = frontText
-					.withMessage(0, Text.literal(page.getLine(0)))
-					.withMessage(1, Text.literal(page.getLine(1)))
-					.withMessage(2, Text.literal(page.getLine(2)))
-					.withMessage(3, Text.literal(page.getLine(3)));
-				
-				signEntity.setText(newText, true);
-				signEntity.markDirty();
-				client.world.updateListeners(pos, signEntity.getCachedState(), signEntity.getCachedState(), 3);
-				
-				System.out.println("[SignScribe DEBUG] Sign text updated successfully via setText()");
-				return;
-			} catch (Exception e1) {
-				System.err.println("[SignScribe ERROR] setText() approach failed: " + e1.getMessage());
-				e1.printStackTrace();
-			}
-
-			System.out.println("[SignScribe DEBUG] Falling back to packet-only approach");
-			try {
-				net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket packet = 
-					new net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket(
-						pos, true, 
-						page.getLine(0), page.getLine(1), page.getLine(2), page.getLine(3)
-					);
-				
-				if (client.getNetworkHandler() != null) {
-					client.getNetworkHandler().sendPacket(packet);
-					System.out.println("[SignScribe DEBUG] Packet sent successfully");
-				} else {
-					System.err.println("[SignScribe ERROR] NetworkHandler is null!");
-				}
-			} catch (Exception e2) {
-				System.err.println("[SignScribe ERROR] Packet approach failed: " + e2.getMessage());
-				e2.printStackTrace();
-			}
+			System.out.println("[SignScribe DEBUG] Sending UpdateSignC2SPacket (packet-only approach)");
+			
+			net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket packet = 
+				new net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket(
+					pos, true, 
+					page.getLine(0), page.getLine(1), page.getLine(2), page.getLine(3)
+				);
+			
+			client.getNetworkHandler().sendPacket(packet);
+			System.out.println("[SignScribe DEBUG] Packet sent successfully");
 
 		} catch (Exception e) {
 			System.err.println("[SignScribe ERROR] Error updating sign text: " + e.getMessage());
