@@ -64,23 +64,30 @@
 ### Build & Release
 
 #### Build Output
-- **JAR:** `build/libs/SignScribe-1.0.0.jar` (7.7 KB)
-- **Test Results:** All passing
+- **JAR:** `build/libs/SignScribe-1.0.0-alpha2.jar` (21 KB)
+- **Test Results:** All passing (21 tests)
 - **Build Command:** `./gradlew build`
 
-#### GitHub Release
+#### GitHub Release - Latest (Alpha 2)
+- **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha2
+- **Tag:** v1.0.0-alpha2
+- **Title:** SignScribe v1.0.0 Alpha 2
+- **Assets:** SignScribe-1.0.0-alpha2.jar uploaded
+- **Status:** ✅ Live and ready for download
+
+#### GitHub Release - Alpha 1
 - **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha1
 - **Tag:** v1.0.0-alpha1
 - **Title:** SignScribe v1.0.0 Alpha 1
 - **Assets:** SignScribe-1.0.0.jar uploaded
-- **Status:** ✅ Live and ready for download
+- **Status:** ✅ Legacy release
 
 ### Git State
 ```
 Branch: main
 Ahead of origin: 0 commits (all pushed)
-Last commit: 6efc25c - Add JAR upload helper script
-Tag: v1.0.0-alpha1 (pushed)
+Last commit: 25e616c - Release: Prepare v1.0.0-alpha2
+Tag: v1.0.0-alpha2 (pushed)
 ```
 
 ---
@@ -332,8 +339,9 @@ who loved to write
 ## Important Files
 
 ### Release Notes
-- **Current:** `RELEASE_NOTES_v1.0.0-alpha1.md`
-- **Template:** Use as reference for future releases
+- **Current:** `RELEASE_NOTES_v1.0.0-alpha2.md`
+- **Previous:** `RELEASE_NOTES_v1.0.0-alpha1.md`
+- **Template:** Use latest as reference for future releases
 
 ### Upload Script
 - **Location:** `upload-jar.sh`
@@ -403,6 +411,8 @@ gh release upload v1.0.0-alpha2 build/libs/SignScribe-1.0.0.jar
 
 ## Session Notes
 
+- **v1.0.0-alpha2 released and live on GitHub**
+- All branches merged into main (phase-1, phase-1-and-2)
 - Phase 3 complete - Data storage, configuration, and session management implemented
 - All tests passing (21 total tests across 4 test classes)
 - Configuration system ready with 6 configurable options
@@ -432,4 +442,5 @@ modmenu_version = 11.0.1
 ---
 
 **Session End: 2025-01-05**
+**Last Release:** v1.0.0-alpha2
 **Next Session: Continue Phase 4 Development**
