@@ -1,7 +1,7 @@
 # SignScribe Session Restore
 
 **Date:** 2025-01-05  
-**Session Status:** Phase 3 Complete  
+** Session Status: Phase 5 Complete
 **Branch:** main  
 **Phase:** 1-3 Complete (29/120 tasks)
 
@@ -61,20 +61,109 @@
   - SignScribeFileManagerTest (6 tests)
   - SignScribePlacementTest (10 tests)
 
+#### Phase 5: Advanced Features & Data Management ✅
+- **SignTemplate** - Reusable sign text layouts:
+  - Name, description, author tracking
+  - 4 lines of text (14 chars each)
+  - Unique template ID (UUID)
+  - Created and last used timestamps
+  - Usage counter for popularity
+  - toSignPage() conversion
+  - Serialization to/from Map
+
+- **SignTemplateManager** - Template collection:
+  - Store in config/signscribe/templates/
+  - Properties file format (.template)
+  - Load/save/delete templates
+  - Find by name, ID, author
+  - Most used/recently used queries
+  - Automatic loading on startup
+
+- **SessionTemplate** - Session configuration templates:
+  - Save entire .txth file as template
+  - Preview lines (first 4) for quick reference
+  - Export/import via ZIP format
+  - Author and usage tracking
+  - Metadata included in ZIP
+
+- **SessionTemplateManager** - Session template management:
+  - Store in config/signscribe/session_templates/
+  - ZIP file format with metadata + preview
+  - Filter by filename or author
+  - Sort by usage or recent
+  - Template count queries
+  - Unique filename tracking
+
+- **ImportExportManager** - Data transfer:
+  - Export session to ZIP (session.dat + .txth)
+  - Import session from ZIP (restore state)
+  - Export templates to ZIP (all templates)
+  - Import templates from ZIP
+  - Export all data (templates.zip + session.zip)
+  - NBT format for session data
+
+- **TxthFileFilter** - Advanced file filtering:
+  - Filter by name (partial/exact)
+  - Filter by creation/modification date
+  - Filter by file size (min/max)
+  - Sort by name, date, or size
+  - Ascending/descending order
+  - Recent files (within X days)
+  - Largest/smallest files queries
+  - Human-readable sizes (B/KB/MB)
+
+- **BatchOperations** - Bulk file management:
+  - Batch rename multiple files
+  - Batch delete multiple files
+  - Batch copy multiple files
+  - Batch apply template to files
+  - Batch find and replace text
+  - Batch validate .txth files
+  - Success/failure/skipped tracking
+
+- **SessionHistoryManager** - Session tracking:
+  - Log all sessions to session_history.log
+  - Track filename, signs placed, duration
+  - Timestamp for each session
+  - Recent sessions list
+  - Most played files
+  - Longest sessions
+  - Per-file statistics
+
+- **SignScribeStatistics** - Comprehensive analytics:
+  - General stats (files, size, templates, history)
+  - File stats (valid/invalid counts, signs, characters)
+  - Usage stats (sessions, signs, time, template usage)
+  - Template stats (counts, popular ones)
+  - Popular files ranking
+  - Generate formatted reports
+
+- **BackupRestoreManager** - Complete backup system:
+  - Create full backup to ZIP:
+    - All .txth files
+    - All sign templates
+    - All session templates
+    - Current session data (NBT)
+    - Session history log
+    - Backup metadata (timestamp, version, stats)
+  - Restore from ZIP (complete state recovery)
+  - Scheduled backup with rotation (removes old)
+  - Timestamped backup filenames
+
 ### Build & Release
 
 #### Build Output
-- **JAR:** `build/libs/SignScribe-1.0.0-alpha2.jar` (21 KB, Phase 1-3 features)
+- **JAR:** `build/libs/SignScribe-1.0.0-alpha4.jar` (KB, Phase 1-3 + 5 features)
 - **Test Results:** All passing (21 tests - Phase 1-3)
 - **Build Command:** `./gradlew clean build`
 
-#### GitHub Release - Latest (Alpha 3)
-- **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha3
-- **Tag:** v1.0.0-alpha3
-- **Title:** SignScribe v1.0.0 Alpha 3
-- **Assets:** SignScribe-1.0.0-alpha2.jar uploaded (Phase 1-3 features)
+#### GitHub Release - Latest (Alpha 4)
+- **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha4
+- **Tag:** v1.0.0-alpha4
+- **Title:** SignScribe v1.0.0 Alpha 4
+- **Assets:** SignScribe-1.0.0-alpha4.jar uploaded (Phase 1-3 + 5 features)
 - **Status:** ✅ Live and ready for download
-- **Note:** Phase 4 features documented but not functional (API compatibility issues)
+- **Note:** Phase 4 features documented (API compatibility), Phase 5 features fully functional
 
 #### GitHub Release - Alpha 2
 - **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha2
@@ -91,10 +180,11 @@
 ### Git State
 ```
 Branch: main
-Current position: 9d46ed9 - Documentation: Update session state after Alpha 2 release
-Note: Reset to Phase 3 complete state for Alpha 3 release
-Tag: v1.0.0-alpha3 (pushed)
-Phase 4 commits available in history but not merged due to API issues
+Last commit: [latest - after Phase 5 merge]
+Phase 5 merged from phase-5 branch
+Tag: v1.0.0-alpha4 (to be pushed)
+Phase 4 commits in history (API compatibility issues)
+Phase 5 commits: 8 detailed commits, all merged
 ```
 
 ---

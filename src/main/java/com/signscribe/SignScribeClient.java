@@ -16,9 +16,16 @@ public class SignScribeClient implements ClientModInitializer {
 		fileManager.setConfigDir(configDir);
 		data.setDataFile(configDir);
 		
+		SignTemplateManager.getInstance().setTemplatesDirectory(configDir);
+		SessionTemplateManager.getInstance().setTemplatesDirectory(configDir);
+		SessionHistoryManager.getInstance().setHistoryFile(configDir);
+		
 		try {
 			fileManager.initializeDirectories();
 			data.load();
+			SignTemplateManager.getInstance().loadTemplates();
+			SessionTemplateManager.getInstance().loadTemplates();
+			SessionHistoryManager.getInstance().loadHistory();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize SignScribe directories or data", e);
 		}
