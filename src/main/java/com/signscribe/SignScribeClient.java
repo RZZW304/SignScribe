@@ -1,6 +1,7 @@
 package com.signscribe;
 
 import com.signscribe.command.SignScribeCommands;
+import com.signscribe.handler.SignPlacementEventHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
@@ -31,5 +32,6 @@ public class SignScribeClient implements ClientModInitializer {
 		}
 		
 		SignScribeCommands.register();
+		SignPlacementEventHandler.register();
 	}
 }
