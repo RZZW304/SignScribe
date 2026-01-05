@@ -18,10 +18,12 @@ public class SignScribeClient implements ClientModInitializer {
 		Path configDir = FabricLoader.getInstance().getConfigDir();
 		fileManager.setConfigDir(configDir);
 		data.setDataFile(configDir);
+		SignScribeConfig.setConfigPath(configDir);
 		
 		try {
 			fileManager.initializeDirectories();
 			data.load();
+			SignScribeConfig.load();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize SignScribe directories or data", e);
 		}
