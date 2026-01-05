@@ -12,10 +12,13 @@ import java.io.IOException;
 
 public class SignScribeCommands {
 	public static void register() {
+		System.out.println("[SignScribe DEBUG] Registering commands");
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+			System.out.println("[SignScribe DEBUG] Command callback fired");
 			dispatcher.register(ClientCommandManager.literal("signscribe")
 				.then(ClientCommandManager.literal("on")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe on executed");
 						SignScribeConfig.getInstance().enabled = true;
 						context.getSource().sendFeedback(Text.of("§a[SignScribe] Mod enabled"));
 						return 1;
@@ -23,6 +26,7 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("off")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe off executed");
 						SignScribeConfig.getInstance().enabled = false;
 						context.getSource().sendFeedback(Text.of("§c[SignScribe] Mod disabled"));
 						return 1;
@@ -30,18 +34,24 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("open")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe open executed");
 						if (context.getSource().getClient() != null) {
 							try {
+								System.out.println("[SignScribe DEBUG] Setting screen to SignScribePathScreen");
 								context.getSource().getClient().setScreen(
 									new SignScribePathScreen(null)
 								);
+								System.out.println("[SignScribe DEBUG] Screen set successfully");
 								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file loader..."));
 								return 1;
 							} catch (Exception e) {
-								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));
+								System.err.println("[SignScribe ERROR] Error opening screen: " + e.getMessage());
 								e.printStackTrace();
+								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));
 								return 0;
 							}
+						} else {
+							System.err.println("[SignScribe ERROR] Client is null");
 						}
 						return 0;
 					})
