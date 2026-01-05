@@ -125,28 +125,28 @@ public class SignPlacementEventHandler {
 				return;
 			}
 
-			System.out.println("[SignScribe DEBUG] SignBlockEntity found, attempting to set text");
+			System.out.println("[SignScribe DEBUG] SignBlockEntity found, attempting immutable SignText replacement");
 
 			try {
 				var frontText = signEntity.getFrontText();
-				var updatedText = frontText.withMessage(0, Text.literal(page.getLine(0)))
+				var newText = frontText
+					.withMessage(0, Text.literal(page.getLine(0)))
 					.withMessage(1, Text.literal(page.getLine(1)))
 					.withMessage(2, Text.literal(page.getLine(2)))
 					.withMessage(3, Text.literal(page.getLine(3)));
 				
-				java.lang.reflect.Field frontTextField = SignBlockEntity.class.getDeclaredField("frontText");
-				frontTextField.setAccessible(true);
-				frontTextField.set(signEntity, updatedText);
-				
+				signEntity.setText(newText, true);
 				signEntity.markDirty();
 				client.world.updateListeners(pos, signEntity.getCachedState(), signEntity.getCachedState(), 3);
 				
-				System.out.println("[SignScribe DEBUG] Sign text updated successfully via reflection");
+				System.out.println("[SignScribe DEBUG] Sign text updated successfully via setText()");
 				return;
 			} catch (Exception e1) {
-				System.err.println("[SignScribe ERROR] Reflection approach failed: " + e1.getMessage());
+				System.err.println("[SignScribe ERROR] setText() approach failed: " + e1.getMessage());
+				e1.printStackTrace();
 			}
 
+			System.out.println("[SignScribe DEBUG] Falling back to packet-only approach");
 			try {
 				net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket packet = 
 					new net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket(
@@ -162,13 +162,12 @@ public class SignPlacementEventHandler {
 				}
 			} catch (Exception e2) {
 				System.err.println("[SignScribe ERROR] Packet approach failed: " + e2.getMessage());
-				throw e2;
+				e2.printStackTrace();
 			}
 
 		} catch (Exception e) {
 			System.err.println("[SignScribe ERROR] Error updating sign text: " + e.getMessage());
 			e.printStackTrace();
-			throw e;
 		}
 	}
 }
