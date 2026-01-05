@@ -16,6 +16,10 @@ public class SignScribeCommands {
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			System.out.println("[SignScribe DEBUG] Command callback fired");
 			dispatcher.register(ClientCommandManager.literal("signscribe")
+				.executes(context -> {
+					context.getSource().sendFeedback(Text.of("§a[SignScribe] Available commands: on, off, open, next, prev, status, stop"));
+					return 1;
+				})
 				.then(ClientCommandManager.literal("on")
 					.executes(context -> {
 						System.out.println("[SignScribe DEBUG] /signscribe on executed");
@@ -35,12 +39,13 @@ public class SignScribeCommands {
 				.then(ClientCommandManager.literal("open")
 					.executes(context -> {
 						System.out.println("[SignScribe DEBUG] /signscribe open executed");
+						System.out.println("[SignScribe DEBUG] Client: " + context.getSource().getClient());
 						if (context.getSource().getClient() != null) {
 							try {
-								System.out.println("[SignScribe DEBUG] Setting screen to SignScribePathScreen");
-								context.getSource().getClient().setScreen(
-									new SignScribePathScreen(null)
-								);
+								System.out.println("[SignScribe DEBUG] Creating SignScribePathScreen");
+								SignScribePathScreen screen = new SignScribePathScreen(null);
+								System.out.println("[SignScribe DEBUG] Screen created: " + screen);
+								context.getSource().getClient().setScreen(screen);
 								System.out.println("[SignScribe DEBUG] Screen set successfully");
 								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file loader..."));
 								return 1;
@@ -51,13 +56,14 @@ public class SignScribeCommands {
 								return 0;
 							}
 						} else {
-							System.err.println("[SignScribe ERROR] Client is null");
+							System.err.println("[SignScribe ERROR] Client is null in open command");
+							return 0;
 						}
-						return 0;
 					})
 				)
 				.then(ClientCommandManager.literal("next")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe next executed");
 						try {
 							SignScribePlacement.getInstance().advanceToNextPage();
 							context.getSource().sendFeedback(Text.of("Advanced to next page"));
@@ -70,6 +76,7 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("sign")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe sign executed");
 						SignScribePlacement placement = SignScribePlacement.getInstance();
 						if (!placement.hasSession()) {
 							context.getSource().sendError(Text.of("No active session"));
@@ -87,6 +94,7 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("prev")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe prev executed");
 						SignScribePlacement placement = SignScribePlacement.getInstance();
 						if (!placement.hasSession()) {
 							context.getSource().sendError(Text.of("No active session"));
@@ -108,6 +116,7 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("status")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe status executed");
 						SignScribePlacement placement = SignScribePlacement.getInstance();
 						if (placement.hasSession()) {
 							String status = String.format(
@@ -125,6 +134,7 @@ public class SignScribeCommands {
 				)
 				.then(ClientCommandManager.literal("stop")
 					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe stop executed");
 						if (!SignScribePlacement.getInstance().hasSession()) {
 							context.getSource().sendError(Text.of("No active session"));
 							return 0;
@@ -140,6 +150,7 @@ public class SignScribeCommands {
 					})
 				)
 			);
+			System.out.println("[SignScribe DEBUG] Commands registered successfully");
 		});
 	}
 }
