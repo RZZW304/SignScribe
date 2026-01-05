@@ -78,11 +78,7 @@ public class SignPlacementHandler {
 			SignBlockEntity signEntity = (SignBlockEntity) world.getBlockEntity(pos);
 			
 			if (signEntity != null) {
-				String[] lines = currentPage.getLines();
-				for (int i = 0; i < lines.length; i++) {
-					signEntity.setTextOnRow(i, Text.literal(lines[i]));
-				}
-				signEntity.markDirty();
+				SignTextRenderer.applyTextToSign(signEntity, currentPage);
 			}
 			
 			if (config.showSuccessMessage) {
