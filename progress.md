@@ -388,22 +388,29 @@ The project consists of two main components:
 - [x] Count total signs in file
 
 ### Phase 3: Data Storage & Configuration
-- [ ] Create global state management
-- [ ] Store loaded .txth file path
-- [ ] Store sign pages (List<String>)
-- [ ] Track current sign number
-- [ ] Track total signs loaded
-- [ ] Implement configuration storage (last file, last sign, enabled state)
-- [ ] Clear saved position when file is unloaded
+- [x] Create global state management
+- [x] Store loaded .txth file path
+- [x] Store sign pages (List<String>)
+- [x] Track current sign number
+- [x] Track total signs loaded
+- [x] Implement configuration storage (last file, last sign, enabled state)
+- [x] Clear saved position when file is unloaded
 
 ### Phase 4: Sign Placement Logic
-- [ ] Hook into sign placement event (all sign types)
-- [ ] Cancel default sign edit GUI
-- [ ] Apply pre-formatted text to sign TileEntity (exactly as parsed)
-- [ ] Send update packet to server
-- [ ] Auto-advance to next sign
-- [ ] Save current sign number to config
-- [ ] Display progress notifications
+- [x] Hook into sign placement event (all sign types)
+- [x] Cancel default sign edit GUI
+- [x] Apply pre-formatted text to sign TileEntity (exactly as parsed)
+- [x] Send update packet to server
+- [x] Auto-advance to next sign
+- [x] Save current sign number to config
+- [x] Display progress notifications
+
+#### Implementation Details
+- **UseBlockCallback:** Fabric event for block interaction
+- **Reflection:** Java reflection to call setText(int, Text) method
+- **Fallback:** Direct field access if reflection method fails
+- **Network:** UpdateSignC2SPacket for server sync
+- **Notifications:** Green chat messages showing progress
 
 ### Phase 5: GUI Implementation
 - [ ] File path GUI (text field for pasting file path)

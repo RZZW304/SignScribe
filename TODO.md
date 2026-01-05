@@ -47,19 +47,19 @@
 - [ ] 🟡 Test persistence (restart game)
 
 ### Phase 4: Sign Placement Logic (Core)
-- [ ] 🔴 Register sign placement event handler
-- [ ] 🔴 Hook into sign placement for all sign types (oak, birch, spruce, etc.)
-- [ ] 🔴 Cancel default sign edit GUI
-- [ ] 🔴 Get current sign text from loaded .txth file
-- [ ] 🔴 Apply pre-formatted text to sign TileEntity
-- [ ] 🔴 Send sign update packet to server
-- [ ] 🔴 Auto-advance to next sign after placement
-- [ ] 🔴 Save current sign number to config
-- [ ] 🟡 Display progress notification (Sign X of Y placed)
-- [ ] 🟡 Display success notification (Sign text applied)
-- [ ] 🔴 Test sign placement flow
-- [ ] 🔴 Test sign progression
-- [ ] 🔴 Test with all sign types
+- [x] 🔴 Register sign placement event handler
+- [x] 🔴 Hook into sign placement for all sign types (oak, birch, spruce, etc.)
+- [x] 🔴 Cancel default sign edit GUI
+- [x] 🔴 Get current sign text from loaded .txth file
+- [x] 🔴 Apply pre-formatted text to sign TileEntity
+- [x] 🔴 Send sign update packet to server
+- [x] 🔴 Auto-advance to next sign after placement
+- [x] 🔴 Save current sign number to config
+- [x] 🟡 Display progress notification (Sign X of Y placed)
+- [x] 🟡 Display success notification (Sign text applied)
+- [x] 🔴 Test sign placement flow
+- [x] 🔴 Test sign progression
+- [x] 🔴 Test with all sign types
 
 ### Phase 5: GUI Implementation (Important)
 - [ ] 🟡 Create file path GUI screen
