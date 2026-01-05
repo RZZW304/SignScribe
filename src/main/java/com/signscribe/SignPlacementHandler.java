@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -16,8 +17,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class SignPlacementHandler {
 	private static SignPlacementHandler INSTANCE;
+	private final Map<UUID, Integer> autoAdvanceTimers = new HashMap<>();
 	
 	public static SignPlacementHandler getInstance() {
 		if (INSTANCE == null) {
@@ -86,7 +92,11 @@ public class SignPlacementHandler {
 			}
 			
 			if (config.autoAdvance) {
-				placement.advanceToNextPage();
+				if (config.autoAdvanceDelay > 0) {
+					scheduleAutoAdvance(player, world);
+				} else {
+					placement.advanceToNextPage();
+				}
 			}
 			
 			return ActionResult.SUCCESS;
@@ -96,6 +106,47 @@ public class SignPlacementHandler {
 			}
 			return ActionResult.FAIL;
 		}
+	}
+	
+	private void scheduleAutoAdvance(ServerPlayerEntity player, World world) {
+		if (!(world instanceof ServerWorld)) {
+			return;
+		}
+		
+		ServerWorld serverWorld = (ServerWorld) world;
+		int delay = SignScribeConfig.getInstance().autoAdvanceDelay;
+		
+		serverWorld.getServer().getCommands().executeWithPrefix(
+			serverWorld.getCommandSource(),
+			"execute as " + player.getName().getString() + " run title " + player.getName().getString() + " actionbar {\"text\":\"Auto-advancing in " + delay + " ticks...\",\"color\":\"yellow\"}"
+		);
+		
+		UUID playerId = player.getUuid();
+		if (!autoAdvanceTimers.containsKey(playerId)) {
+			startTimerTask(player, serverWorld, playerId, delay);
+		}
+	}
+	
+	private void startTimerTask(ServerPlayerEntity player, ServerWorld world, UUID playerId, int delay) {
+		autoAdvanceTimers.put(playerId, delay);
+		
+		world.getServer().submit(() -> {
+			try {
+				Thread.sleep(delay * 50L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			autoAdvanceTimers.remove(playerId);
+			SignScribePlacement placement = SignScribePlacement.getInstance();
+			try {
+				if (placement.hasSession()) {
+					placement.advanceToNextPage();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	private boolean isSignItem(Item item) {
