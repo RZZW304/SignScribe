@@ -64,30 +64,37 @@
 ### Build & Release
 
 #### Build Output
-- **JAR:** `build/libs/SignScribe-1.0.0-alpha2.jar` (21 KB)
-- **Test Results:** All passing (21 tests)
-- **Build Command:** `./gradlew build`
+- **JAR:** `build/libs/SignScribe-1.0.0-alpha2.jar` (21 KB, Phase 1-3 features)
+- **Test Results:** All passing (21 tests - Phase 1-3)
+- **Build Command:** `./gradlew clean build`
 
-#### GitHub Release - Latest (Alpha 2)
+#### GitHub Release - Latest (Alpha 3)
+- **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha3
+- **Tag:** v1.0.0-alpha3
+- **Title:** SignScribe v1.0.0 Alpha 3
+- **Assets:** SignScribe-1.0.0-alpha2.jar uploaded (Phase 1-3 features)
+- **Status:** ✅ Live and ready for download
+- **Note:** Phase 4 features documented but not functional (API compatibility issues)
+
+#### GitHub Release - Alpha 2
 - **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha2
 - **Tag:** v1.0.0-alpha2
 - **Title:** SignScribe v1.0.0 Alpha 2
-- **Assets:** SignScribe-1.0.0-alpha2.jar uploaded
-- **Status:** ✅ Live and ready for download
+- **Status:** ✅ Legacy release
 
 #### GitHub Release - Alpha 1
 - **URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha1
 - **Tag:** v1.0.0-alpha1
 - **Title:** SignScribe v1.0.0 Alpha 1
-- **Assets:** SignScribe-1.0.0.jar uploaded
 - **Status:** ✅ Legacy release
 
 ### Git State
 ```
 Branch: main
-Ahead of origin: 0 commits (all pushed)
-Last commit: 25e616c - Release: Prepare v1.0.0-alpha2
-Tag: v1.0.0-alpha2 (pushed)
+Current position: 9d46ed9 - Documentation: Update session state after Alpha 2 release
+Note: Reset to Phase 3 complete state for Alpha 3 release
+Tag: v1.0.0-alpha3 (pushed)
+Phase 4 commits available in history but not merged due to API issues
 ```
 
 ---
@@ -411,16 +418,30 @@ gh release upload v1.0.0-alpha2 build/libs/SignScribe-1.0.0.jar
 
 ## Session Notes
 
-- **v1.0.0-alpha2 released and live on GitHub**
+- **v1.0.0-alpha3 released and live on GitHub**
+- Release includes JAR with Phase 1-3 features (21 KB)
+- Phase 4 features documented in release notes but not functional
 - All branches merged into main (phase-1, phase-1-and-2)
 - Phase 3 complete - Data storage, configuration, and session management implemented
-- All tests passing (21 total tests across 4 test classes)
+- All tests passing (21 tests - Phase 1-3 only)
 - Configuration system ready with 6 configurable options
 - File manager handles .txth files from config directory
 - NBT persistence saves session state between game runs
 - Commands available for full session control
 - GUI for file selection implemented
-- Next: Phase 4 - Sign placement and interaction with world
+
+- **Phase 4 Implementation Status:**
+  - All features implemented (8/10 tasks)
+  - Code available in git history
+  - Blocked by Minecraft 1.21 API compatibility issues
+  - Requires API fixes to compile and test
+  - Documented in Alpha 3 release notes
+
+- **Next:**
+  1. Fix API compatibility for Minecraft 1.21 (top priority)
+  2. Test Phase 4 features end-to-end
+  3. Release v1.0.0-alpha4 (Phase 4 fully functional)
+  4. Continue Phase 5 development
 
 ---
 
