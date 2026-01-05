@@ -7,13 +7,25 @@
 
 ---
 
-## 🎉 Phase 5 Complete: Advanced Features & Data Management
+## 🎉 Phase 4 Complete: Sign Placement + Phase 5 Complete: Advanced Features
 
-This release adds comprehensive data management, templates, batch operations, and powerful analytics to SignScribe.
+This release adds functional sign placement logic PLUS comprehensive data management, templates, batch operations, and powerful analytics to SignScribe.
 
 ---
 
 ## ✨ New Features
+
+### Phase 4: Sign Placement ✅
+- **SignPlacementEventHandler** - Real sign placement in world:
+  - Right-click any sign to auto-apply text from loaded .txth file
+  - Cancel default sign edit GUI when session is active
+  - Auto-advance to next sign on subsequent placements
+  - Support for all sign types (oak, birch, spruce, etc.)
+  - Progress notifications: "§a[SignScribe] Sign X/Y placed"
+  - Server synchronization via UpdateSignC2SPacket
+  - Java reflection workaround for Minecraft 1.21 API compatibility
+
+### Phase 5: Advanced Features
 
 ### Template System
 - **SignTemplate** - Reusable sign text layouts:
@@ -182,7 +194,7 @@ config/signscribe/
 - ✅ Phase 1: Project Setup
 - ✅ Phase 2: File Format & Parsing
 - ✅ Phase 3: Data Storage & Configuration
-- ⚠️ Phase 4: Sign Placement (API fixes needed)
+- ✅ Phase 4: Sign Placement Logic (with 1.21 API compatibility)
 - ✅ Phase 5: Advanced Features & Data Management
 
 ### Phase 6 Planning
@@ -252,7 +264,16 @@ config/signscribe/
 
 ## 🔄 Changes from Alpha 3
 
-### Added
+### Added (Phase 4)
+- ✅ SignPlacementEventHandler with UseBlockCallback
+- ✅ Right-click sign interaction
+- ✅ Automatic text application from .txth files
+- ✅ Auto-advance to next sign
+- ✅ Progress notifications in chat
+- ✅ Reflection-based API compatibility for 1.21
+- ✅ Server packet synchronization
+
+### Added (Phase 5)
 - ✅ Sign template system
 - ✅ Session template system
 - ✅ Import/export manager (ZIP format)
@@ -271,18 +292,18 @@ config/signscribe/
 
 ## ⚠️ Known Limitations
 
-### Not Implemented (Phase 4+)
-- ❌ Sign placement in world (Phase 4 API compatibility issues)
-- ❌ Sign text rendering on placed signs (Phase 4 API compatibility issues)
-- ❌ Text preview before placement (Phase 4 API compatibility issues)
-- ❌ Right-click interaction with signs (Phase 4 API compatibility issues)
-- ❌ Keybinds for navigation (Phase 4 API compatibility issues)
+### Not Implemented (Future Phases)
+- ❌ ModMenu configuration GUI (Phase 6)
+- ❌ Keybinds for quick navigation (Phase 6)
+- ❌ Undo/redo for sign placement (Phase 6)
+- ❌ External Python formatter app (Phase 7+)
+- ❌ Full documentation (README with usage examples)
 
 ### Current Capabilities
 - ✅ Phase 1-3: Fully functional
+- ✅ Phase 4: Fully functional (sign placement working)
 - ✅ Phase 5: Fully functional
-- ⚠️ Phase 4: Implemented but requires API fixes for Minecraft 1.21
-- ✅ All Phase 5 features working independently
+- ✅ All core features working together
 - ✅ Comprehensive data management
 
 ---
@@ -313,4 +334,5 @@ https://github.com/RZZW304/SignScribe/issues
 
 **Enjoy SignScribe v1.0.0 Alpha 4! 🎉**
 
+*Phase 4 complete! Sign placement is now fully functional.*
 *Phase 5 complete! Advanced data management features ready to use.*
