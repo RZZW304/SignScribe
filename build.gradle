@@ -30,6 +30,9 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	testImplementation "org.junit.jupiter:junit-jupiter:5.10.0"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 processResources {
