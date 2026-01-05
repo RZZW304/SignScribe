@@ -189,10 +189,10 @@ public class BackupRestoreManager {
 						new ByteArrayInputStream(baos.toByteArray()),
 						net.minecraft.nbt.NbtSizeTracker.ofUnlimitedBytes()
 					);
-					SignScribeData.getInstance().setCurrentTxthFile(nbt.getString("currentTxthFile"));
-					SignScribeData.getInstance().setCurrentPageIndex(nbt.getInt("currentPageIndex"));
-					SignScribeData.getInstance().setTotalSigns(nbt.getInt("totalSigns"));
-					SignScribeData.getInstance().setHasActiveSession(nbt.getBoolean("hasActiveSession"));
+					SignScribeData.getInstance().setCurrentTxthFile(nbt.getString("currentTxthFile").orElse(""));
+					SignScribeData.getInstance().setCurrentPageIndex(nbt.getInt("currentPageIndex").orElse(0));
+					SignScribeData.getInstance().setTotalSigns(nbt.getInt("totalSigns").orElse(0));
+					SignScribeData.getInstance().setHasActiveSession(nbt.getBoolean("hasActiveSession").orElse(false));
 					SignScribeData.getInstance().save();
 				} else if (path.equals("session_history.log")) {
 					Path targetPath = Path.of(

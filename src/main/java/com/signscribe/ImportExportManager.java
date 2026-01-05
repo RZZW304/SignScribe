@@ -86,9 +86,9 @@ public class ImportExportManager {
 			if (sessionNbt != null) {
 				SignScribeData data = SignScribeData.getInstance();
 				data.setCurrentTxthFile(txthFilename);
-				data.setCurrentPageIndex(sessionNbt.getInt("currentPageIndex"));
-				data.setTotalSigns(sessionNbt.getInt("totalSigns"));
-				data.setHasActiveSession(sessionNbt.getBoolean("hasActiveSession"));
+				data.setCurrentPageIndex(sessionNbt.getInt("currentPageIndex").orElse(0));
+				data.setTotalSigns(sessionNbt.getInt("totalSigns").orElse(0));
+				data.setHasActiveSession(sessionNbt.getBoolean("hasActiveSession").orElse(false));
 				data.save();
 			}
 

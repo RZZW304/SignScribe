@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0--alpha4-green)
-![Minecraft](https://img.shields.io/badge/Minecraft-1.21-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0--alpha5.7-green)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.21.5-brightgreen)
 ![Fabric](https://img.shields.io/badge/Fabric-Loader-blue)
 ![License](https://img.shields.io/badge/license-Private%20Use-red)
 ![Java](https://img.shields.io/badge/Java-21-orange)
@@ -78,10 +78,10 @@ SignScribe is a powerful Minecraft Fabric mod that allows you to automatically c
 
 ### Requirements
 
-- **Minecraft:** 1.21
+- **Minecraft:** 1.21.5
 - **Java:** 21+
-- **Fabric Loader:** 0.15.11+
-- **Fabric API:** 0.100.4+1.21
+- **Fabric Loader:** 0.16.9+
+- **Fabric API:** 0.106.0+1.21.5
 - **ModMenu:** 11.0.1+ (optional, recommended)
 
 ### Download
@@ -90,16 +90,16 @@ Grab the latest release from [Releases](../../releases) or build from source.
 
 ```bash
 # Download the JAR file
-wget https://github.com/RZZW304/SignScribe/releases/download/v1.0.0-alpha4/SignScribe-1.0.0-alpha4.jar
+wget https://github.com/RZZW304/SignScribe/releases/download/v1.21.5/SignScribe-1.21.5.jar
 
 # Or use the included JAR from build/
 ```
 
 ### Install
 
-1. Download `SignScribe-1.0.0-alpha4.jar`
+1. Download `SignScribe-1.21.5.jar`
 2. Place the file in `.minecraft/mods/`
-3. Launch Minecraft 1.21 with Fabric Loader
+3. Launch Minecraft 1.21.5 with Fabric Loader
 4. Ensure Fabric API is installed
 
 ### Directory Structure
@@ -439,7 +439,7 @@ A: Ensure your `.txth` file has exactly 14 characters per line. Check for extra 
 A: Check `config/signscribe/data.dat` exists and is writable.
 
 **Q: Mod not working?**
-A: Ensure Fabric API is installed and you're using Minecraft 1.21.
+A: Ensure Fabric API is installed and you're using Minecraft 1.21.5.
 
 **Q: "There are only X signs" error?**
 A: You tried to jump past the last sign in your file.
@@ -470,7 +470,7 @@ cd SignScribe
 ./gradlew build
 
 # Output
-build/libs/SignScribe-1.0.0-alpha4.jar
+build/libs/SignScribe-1.0.0-alpha5.7.jar
 ```
 
 ### Run Tests
@@ -483,7 +483,7 @@ build/libs/SignScribe-1.0.0-alpha4.jar
 
 ## 📝 Development Roadmap
 
-### Alpha 4 (Current) ✅
+### Alpha 5.7 (Current) ✅
 - [x] Sign placement logic
 - [x] Advanced data management
 - [x] Templates & batch operations

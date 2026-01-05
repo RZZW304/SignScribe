@@ -35,10 +35,10 @@ public class SignScribeData {
 		if (nbt == null) {
 			return;
 		}
-		currentTxthFile = nbt.getString("currentTxthFile");
-		currentPageIndex = nbt.getInt("currentPageIndex");
-		totalSigns = nbt.getInt("totalSigns");
-		hasActiveSession = nbt.getBoolean("hasActiveSession");
+		currentTxthFile = nbt.getString("currentTxthFile").orElse("");
+		currentPageIndex = nbt.getInt("currentPageIndex").orElse(0);
+		totalSigns = nbt.getInt("totalSigns").orElse(0);
+		hasActiveSession = nbt.getBoolean("hasActiveSession").orElse(false);
 	}
 
 	public void save() throws IOException {
