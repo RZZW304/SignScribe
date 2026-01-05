@@ -23,7 +23,7 @@ class SignScribePlacementTest {
 		fileManager = SignScribeFileManager.getInstance();
 		fileManager.setConfigDir(tempDir);
 		fileManager.initializeDirectories();
-		fileManager.setDataFile(tempDir);
+		SignScribeData.getInstance().setDataFile(tempDir);
 	}
 	
 	@Test
