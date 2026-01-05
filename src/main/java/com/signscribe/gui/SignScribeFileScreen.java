@@ -23,9 +23,12 @@ public class SignScribeFileScreen extends Screen {
 		this.parent = parent;
 		try {
 			this.fileNames = com.signscribe.SignScribeFileManager.getInstance().listTxthFiles();
+			System.out.println("[SignScribe] Loaded " + fileNames.size() + " .txth files");
 		} catch (IOException e) {
 			this.fileNames = List.of();
 			this.errorMessage = "Error loading files: " + e.getMessage();
+			System.err.println("[SignScribe] Error loading files: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -68,12 +71,21 @@ public class SignScribeFileScreen extends Screen {
 	
 	private void selectFile(String filename) {
 		try {
+			System.out.println("[SignScribe] Starting session with file: " + filename);
 			SignScribePlacement.getInstance().startSession(filename);
+			System.out.println("[SignScribe] Session started successfully");
+			if (client.player != null) {
+				client.player.sendMessage(Text.of("§a[SignScribe] Loaded file: " + filename), true);
+			}
 			client.setScreen(parent);
 		} catch (IOException e) {
 			errorMessage = "Error loading file: " + e.getMessage();
+			System.err.println("[SignScribe] IOException loading file: " + e.getMessage());
+			e.printStackTrace();
 		} catch (com.signscribe.TxthParseException e) {
 			errorMessage = "Parse error: " + e.getMessage();
+			System.err.println("[SignScribe] TxthParseException: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	

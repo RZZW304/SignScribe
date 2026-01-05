@@ -30,10 +30,17 @@ public class SignScribeCommands {
 				.then(ClientCommandManager.literal("open")
 					.executes(context -> {
 						if (context.getSource().getClient() != null) {
-							context.getSource().getClient().setScreen(
-								new SignScribeFileScreen(null)
-							);
-							return 1;
+							try {
+								context.getSource().getClient().setScreen(
+									new SignScribeFileScreen(null)
+								);
+								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file selection..."));
+								return 1;
+							} catch (Exception e) {
+								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));
+								e.printStackTrace();
+								return 0;
+							}
 						}
 						return 0;
 					})

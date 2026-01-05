@@ -4,7 +4,6 @@ import com.signscribe.SignPage;
 import com.signscribe.SignScribePlacement;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.SignBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket;
@@ -41,12 +40,6 @@ public class SignPlacementEventHandler {
 			return ActionResult.PASS;
 		}
 		
-		BlockEntity be = player.getWorld().getBlockEntity(pos);
-		if (!(be instanceof SignBlockEntity signEntity)) {
-			return ActionResult.PASS;
-		}
-		
-		applyTextToSign(signEntity, currentPage);
 		sendSignUpdatePacket(pos, currentPage);
 		
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -63,25 +56,6 @@ public class SignPlacementEventHandler {
 		}
 		
 		return ActionResult.SUCCESS;
-	}
-	
-	private static void applyTextToSign(SignBlockEntity signEntity, SignPage page) {
-		for (int i = 0; i < 4; i++) {
-			Text lineText = Text.literal(page.getLine(i));
-			try {
-				signEntity.getClass().getMethod("setText", int.class, Text.class).invoke(signEntity, i, lineText);
-			} catch (Exception e) {
-				try {
-					java.lang.reflect.Field field = signEntity.getClass().getDeclaredField("messages");
-					field.setAccessible(true);
-					Text[] messages = (Text[]) field.get(signEntity);
-					messages[i] = lineText;
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		signEntity.markDirty();
 	}
 	
 	private static void sendSignUpdatePacket(BlockPos pos, SignPage page) {
