@@ -2,6 +2,7 @@ package com.signscribe;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtSizeTracker;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
