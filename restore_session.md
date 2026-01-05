@@ -1,9 +1,9 @@
 # SignScribe Session Restore
 
 **Date:** 2025-01-05  
-**Session Status:** Phase 3 Complete  
+**Session Status:** Phase 4 Implementation Complete (API Updates Needed)  
 **Branch:** main  
-**Phase:** 1-3 Complete (29/120 tasks)
+**Phase:** 1-3 Complete (29/120 tasks) + Phase 4 (8/10 tasks implemented)
 
 ---
 
@@ -44,8 +44,9 @@
   - Persist between game sessions
 - **SignScribePlacement** for session management:
   - Start/end placement sessions
-  - Navigate pages (next/prev)
-  - Track session state
+  - Navigate pages (next/previous)
+  - Jump to specific page numbers
+  - Track session boundaries
 - **SignScribeFileScreen** GUI:
   - Browse and select .txth files
   - Display current session info
@@ -60,6 +61,88 @@
   - SignScribeDataTest (5 tests)
   - SignScribeFileManagerTest (6 tests)
   - SignScribePlacementTest (10 tests)
+
+#### Phase 4: Sign Placement & Interaction ⚠️ (Implemented, API Updates Required)
+- **SignPlacementHandler** - Right-click sign placement:
+  - Instant placement when holding sign
+  - Places signs with text from current page
+  - Auto-advance after placement
+  - Respects requireEmptyHand config
+  - Supports all sign types (Oak, Spruce, Birch, etc.)
+  - Shows placement feedback messages
+
+- **SignTextRenderer** - Utility class for sign text:
+  - applyTextToSign() - Apply SignPage to sign entity
+  - clearSignText() - Clear all text from sign
+  - getSignText() - Extract text from sign
+  - isSignEmpty() - Check if sign has text
+  - getNonEmptyLineCount() - Count non-empty lines
+
+- **SignPreviewRenderer** - HUD overlay for text preview:
+  - Shows sign text before placement
+  - Displays page progress (e.g., "3/10")
+  - Appears when holding sign item
+  - Only shows when showPreview config enabled
+  - Semi-transparent floating box on left side
+  - Four lines in light blue
+
+- **SignScribeKeybinds** - Keyboard shortcuts:
+  - ] - Next Sign Page
+  - [ - Previous Sign Page
+  - P - Open SignScribe GUI
+  - ESC - Stop SignScribe Session
+  - Z - Undo Last Placement
+  - Y - Redo Last Undo
+  - E - Edit Current Sign
+  - Colored feedback messages
+
+- **SignScribeConfigScreen** - ModMenu configuration GUI:
+  - Checkbox widgets for all boolean options
+  - Auto-Advance delay display
+  - Save & Close, Cancel buttons
+  - Accessible via ModMenu
+
+- **SignScribeConfig persistence**:
+  - Properties file format
+  - Loads from config/signscribe.properties
+  - Saves to file on changes
+  - Maintains defaults if missing
+
+- **Auto-Advance Timer**:
+  - Configurable delay in ticks
+  - Shows action bar countdown
+  - Prevents duplicate timers
+  - Asynchronous execution
+
+- **UndoRedoManager** - Sign placement history:
+  - Records each placed sign
+  - Per-player history tracking
+  - Maximum 50 undo steps
+  - Undo: Removes sign, stores in redo stack
+  - Redo: Replaces sign with original text
+  - Position tracking with coordinate display
+
+- **SignEditScreen** - In-game sign editing:
+  - Editable text fields for 4 lines
+  - 14 character limit per line
+  - Shows current page progress
+  - Save and Cancel buttons
+  - Applies changes to session
+  - Placeholder text for guidance
+
+- **Test suite** for Phase 4:
+  - SignTextRendererTest (5 tests)
+  - UndoRedoManagerTest (6 tests)
+
+⚠️ **Known Issues:**
+- Minecraft 1.21 API compatibility issues:
+  - CheckboxWidget constructor signature changed
+  - SignBlockEntity.setTextOnRow() method changed
+  - Screen.renderBackground() signature changed
+  - Entity.world field access restricted
+  - MinecraftServer API changes
+- Requires API update for Phase 4 to compile
+- Implementation is complete but needs testing after API fixes
 
 ### Build & Release
 
@@ -302,23 +385,32 @@ who loved to write
 
 ---
 
-## Next Steps: Phase 4 - Sign Placement & Interaction
+## Next Steps: API Updates & Phase 5
 
-### Planned Features
-1. Sign placement in world (right-click interaction)
-2. Sign text rendering on placed signs
-3. Text preview before placement
-4. Keybinds for quick navigation
-5. ModMenu configuration GUI
-6. Auto-advance timer implementation
-7. Undo/redo for sign placement
-8. Sign editing mode
+### API Updates Required
+- Fix CheckboxWidget constructor for Minecraft 1.21
+- Update SignBlockEntity text setting methods
+- Fix Screen.renderBackground() calls
+- Update Entity.world access patterns
+- Review MinecraftServer API changes
+- Test Phase 4 features after fixes
+
+### Planned Features - Phase 5
+1. API compatibility fixes
+2. Enhanced sign placement (direction selection)
+3. Sign editing in world
+4. Bulk sign placement
+5. Sign templates
+6. Import/export features
+7. Advanced filtering
+8. Performance optimizations
 
 ### Task Count
 - **Total:** 120 tasks
-- **Completed:** 29 tasks
-- **Remaining:** 91 tasks
-- **Next Phase:** 20-25 tasks
+- **Completed:** 34 tasks (29 Phase 1-3 + 5 Phase 3 tests)
+- **Phase 4 Implemented:** 8/10 (2 tasks: tests, API fixes pending)
+- **Remaining:** 76-86 tasks (depending on API fix complexity)
+- **Immediate Priority:** Fix Phase 4 API compatibility
 
 ---
 
@@ -420,7 +512,30 @@ gh release upload v1.0.0-alpha2 build/libs/SignScribe-1.0.0.jar
 - NBT persistence saves session state between game runs
 - Commands available for full session control
 - GUI for file selection implemented
-- Next: Phase 4 - Sign placement and interaction with world
+
+- **Phase 4 implemented but requires API fixes:**
+  - SignPlacementHandler: Right-click sign placement
+  - SignTextRenderer: Utility for sign text operations
+  - SignPreviewRenderer: HUD text preview
+  - SignScribeKeybinds: 6 keyboard shortcuts
+  - SignScribeConfigScreen: ModMenu GUI
+  - Auto-Advance Timer: Configurable delay
+  - UndoRedoManager: 50-step history
+  - SignEditScreen: In-game text editing
+  - Test suite: 11 tests for Phase 4 features
+
+- **API Compatibility Issues:**
+  - Minecraft 1.21 has breaking API changes
+  - GUI widget constructors updated
+  - Sign entity methods changed
+  - Entity field access restricted
+  - Requires focused API update work
+
+- **Next:**
+  1. Fix API compatibility for Minecraft 1.21
+  2. Test Phase 4 features
+  3. Release v1.0.0-alpha3 (working version)
+  4. Continue Phase 5 development
 
 ---
 
