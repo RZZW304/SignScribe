@@ -4,6 +4,7 @@ import com.signscribe.SignScribePlacement;
 import com.signscribe.SignScribeConfig;
 import com.signscribe.gui.SignScribeFileScreen;
 import com.signscribe.gui.SignScribePathScreen;
+import com.signscribe.gui.SignScribeFilePickerScreen;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.text.Text;
@@ -34,6 +35,27 @@ public class SignScribeCommands {
 						SignScribeConfig.getInstance().enabled = false;
 						context.getSource().sendFeedback(Text.of("§c[SignScribe] Mod disabled"));
 						return 1;
+					})
+				)
+				.then(ClientCommandManager.literal("load")
+					.executes(context -> {
+						System.out.println("[SignScribe DEBUG] /signscribe load executed");
+						if (context.getSource().getClient() != null) {
+							try {
+								SignScribeFilePickerScreen screen = new SignScribeFilePickerScreen(null);
+								context.getSource().getClient().setScreen(screen);
+								context.getSource().sendFeedback(Text.of("§a[SignScribe] Opening file picker..."));
+								return 1;
+							} catch (Exception e) {
+								System.err.println("[SignScribe ERROR] Error opening screen: " + e.getMessage());
+								e.printStackTrace();
+								context.getSource().sendError(Text.of("§c[SignScribe] Error: " + e.getMessage()));
+								return 0;
+							}
+						} else {
+							System.err.println("[SignScribe ERROR] Client is null in load command");
+							return 0;
+						}
 					})
 				)
 				.then(ClientCommandManager.literal("open")

@@ -31,6 +31,10 @@ public class SignScribeFileManager {
 		}
 	}
 
+	public Path getConfigDir() {
+		return configDir;
+	}
+
 	public Path getTxthDirectory() {
 		return configDir.resolve("txth");
 	}
