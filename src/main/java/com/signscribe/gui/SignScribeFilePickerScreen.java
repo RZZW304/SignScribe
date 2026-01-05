@@ -33,7 +33,7 @@ public class SignScribeFilePickerScreen extends Screen {
 	public SignScribeFilePickerScreen(Screen parent) {
 		super(Text.of("SignScribe File Picker"));
 		this.parent = parent;
-		this.currentPath = SignScribeFileManager.getInstance().getConfigDir().resolve("signscribe");
+		this.currentPath = SignScribeFileManager.getInstance().getConfigDir();
 		loadEntries();
 	}
 	
@@ -95,10 +95,10 @@ public class SignScribeFilePickerScreen extends Screen {
 	protected void init() {
 		super.init();
 		
-		maxVisibleItems = (height - 100) / (BUTTON_HEIGHT + BUTTON_PADDING);
+		maxVisibleItems = (height - 140) / (BUTTON_HEIGHT + BUTTON_PADDING);
 		
 		int buttonX = (width - BUTTON_WIDTH) / 2;
-		int startY = 60;
+		int startY = 100;
 		
 		int visibleCount = Math.min(entries.size() - scrollOffset, maxVisibleItems);
 		for (int i = 0; i < visibleCount; i++) {
@@ -118,23 +118,23 @@ public class SignScribeFilePickerScreen extends Screen {
 		
 		if (scrollOffset > 0) {
 			this.addDrawableChild(ButtonWidget.builder(
-				Text.of("▲ Scroll Up"),
+				Text.of("▲"),
 				button -> {
 					scrollOffset = Math.max(0, scrollOffset - maxVisibleItems);
 					clearAndInit();
 				}
-			).dimensions(buttonX + BUTTON_WIDTH + 10, startY, 100, BUTTON_HEIGHT).build());
+			).dimensions(buttonX + BUTTON_WIDTH + 10, startY, 40, BUTTON_HEIGHT).build());
 		}
 		
 		if (scrollOffset + maxVisibleItems < entries.size()) {
 			int downButtonY = startY + (maxVisibleItems - 1) * (BUTTON_HEIGHT + BUTTON_PADDING);
 			this.addDrawableChild(ButtonWidget.builder(
-				Text.of("▼ Scroll Down"),
+				Text.of("▼"),
 				button -> {
 					scrollOffset = Math.min(entries.size() - maxVisibleItems, scrollOffset + maxVisibleItems);
 					clearAndInit();
 				}
-			).dimensions(buttonX + BUTTON_WIDTH + 10, downButtonY, 100, BUTTON_HEIGHT).build());
+			).dimensions(buttonX + BUTTON_WIDTH + 10, downButtonY, 40, BUTTON_HEIGHT).build());
 		}
 		
 		this.addDrawableChild(ButtonWidget.builder(
@@ -231,16 +231,6 @@ public class SignScribeFilePickerScreen extends Screen {
 			0xAAAAAA
 		);
 		
-		if (!errorMessage.isEmpty()) {
-			context.drawCenteredTextWithShadow(
-				this.textRenderer,
-				Text.of(errorMessage),
-				this.width / 2,
-				70,
-				0xFF5555
-			);
-		}
-		
 		SignScribePlacement placement = SignScribePlacement.getInstance();
 		if (placement.hasSession()) {
 			String currentFile = placement.getCurrentFilename();
@@ -254,10 +244,30 @@ public class SignScribeFilePickerScreen extends Screen {
 					this.textRenderer,
 					Text.of(info),
 					this.width / 2,
-					85,
+					65,
 					0x55FF55
 				);
 			}
+		}
+		
+		if (!errorMessage.isEmpty()) {
+			int warningY = height - 80;
+			
+			context.fill(
+				width / 2 - 150,
+				warningY - 10,
+				width / 2 + 150,
+				warningY + 20,
+				0x550000
+			);
+			
+			context.drawCenteredTextWithShadow(
+				this.textRenderer,
+				Text.literal("⚠ " + errorMessage + " ⚠"),
+				this.width / 2,
+				warningY,
+				0xFF5555
+			);
 		}
 		
 		super.render(context, mouseX, mouseY, delta);

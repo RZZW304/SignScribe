@@ -31,6 +31,6 @@ public class SignScribeConfig {
 
 	@Environment(EnvType.CLIENT)
 	public Screen getConfigScreen(Screen parent) {
-		return new com.signscribe.gui.SignScribeFilePickerScreen(parent);
+		return new com.signscribe.gui.SignScribeConfigScreen(parent);
 	}
 }

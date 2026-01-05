@@ -1,10 +1,11 @@
 package com.signscribe.gui;
 
+import com.signscribe.SignScribeFileManager;
+import com.signscribe.SignScribePlacement;
 import com.signscribe.SignScribeConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.OptionListWidget;
 import net.minecraft.text.Text;
 
 public class SignScribeConfigScreen extends Screen {
@@ -71,8 +72,16 @@ public class SignScribeConfigScreen extends Screen {
 				SignScribeConfig.save();
 			}
 		).dimensions(x, y, buttonWidth, 20).build());
-		
+
 		y += 40;
+		this.addDrawableChild(ButtonWidget.builder(
+			Text.literal("Open File Picker"),
+			button -> {
+				client.setScreen(new SignScribeFilePickerScreen(this));
+			}
+		).dimensions(x, y, buttonWidth, 20).build());
+		
+		y += 30;
 		this.addDrawableChild(ButtonWidget.builder(
 			Text.literal("Done"),
 			button -> this.client.setScreen(parent)
@@ -90,6 +99,25 @@ public class SignScribeConfigScreen extends Screen {
 			20,
 			0xFFFFFF
 		);
+
+		SignScribePlacement placement = SignScribePlacement.getInstance();
+		if (placement.hasSession()) {
+			String currentFile = placement.getCurrentFilename();
+			if (currentFile != null && !currentFile.isEmpty()) {
+				String info = String.format("Current session: %s (%d/%d signs)",
+					currentFile,
+					placement.getCurrentPageIndex() + 1,
+					placement.getTotalSigns()
+				);
+				context.drawCenteredTextWithShadow(
+					this.textRenderer,
+					Text.of(info),
+					this.width / 2,
+					270,
+					0x55FF55
+				);
+			}
+		}
 		
 		super.render(context, mouseX, mouseY, delta);
 	}
