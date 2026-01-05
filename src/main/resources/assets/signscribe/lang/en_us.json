@@ -5,5 +5,6 @@
   "key.signscribe.stop": "Stop SignScribe Session",
   "key.signscribe.undo": "Undo Last Placement",
   "key.signscribe.redo": "Redo Last Undo",
+  "key.signscribe.edit": "Edit Current Sign",
   "category.signscribe": "SignScribe"
 }

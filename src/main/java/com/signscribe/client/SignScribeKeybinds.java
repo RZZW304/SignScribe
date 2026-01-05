@@ -19,6 +19,7 @@ public class SignScribeKeybinds {
 	public KeyBinding stopSessionKey;
 	public KeyBinding undoKey;
 	public KeyBinding redoKey;
+	public KeyBinding editSignKey;
 	
 	public static SignScribeKeybinds getInstance() {
 		if (INSTANCE == null) {
@@ -61,6 +62,12 @@ public class SignScribeKeybinds {
 		redoKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 			"key.signscribe.redo",
 			GLFW.GLFW_KEY_Y,
+			"category.signscribe"
+		));
+		
+		editSignKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+			"key.signscribe.edit",
+			GLFW.GLFW_KEY_E,
 			"category.signscribe"
 		));
 		
@@ -132,6 +139,20 @@ public class SignScribeKeybinds {
 					UndoRedoManager.getInstance().redo(client.player, client.player.world);
 				} else {
 					showMessage(client, "§c[SignScribe] Nothing to redo");
+				}
+			}
+		}
+		
+		while (editSignKey.wasPressed()) {
+			if (client.currentScreen != null) {
+				return;
+			}
+			
+			SignScribePlacement placement = SignScribePlacement.getInstance();
+			if (placement.hasSession()) {
+				SignPage currentPage = placement.getCurrentSignPage();
+				if (currentPage != null) {
+					client.setScreen(new com.signscribe.gui.SignEditScreen(null, currentPage));
 				}
 			}
 		}
