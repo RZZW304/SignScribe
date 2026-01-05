@@ -1,7 +1,9 @@
 package com.signscribe;
 
+import com.signscribe.command.SignScribeCommands;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import java.nio.file.Path;
 
 public class SignScribeClient implements ClientModInitializer {
 	@Override
@@ -20,5 +22,7 @@ public class SignScribeClient implements ClientModInitializer {
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize SignScribe directories or data", e);
 		}
+		
+		SignScribeCommands.register();
 	}
 }
