@@ -45,49 +45,15 @@ public class SignScribeCommands {
 						context.getSource().sendFeedback(Text.of("§e/signscribe§r - Show available commands"));
 						context.getSource().sendFeedback(Text.of("§e/signscribe on§r - Enable the mod"));
 						context.getSource().sendFeedback(Text.of("§e/signscribe off§r - Disable the mod"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe load§r - Load all .txth files and open file picker"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe next§r - Advance to next sign"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe prev§r - Go to previous sign"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe status§r - Show current session info"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe stop§r - End current session"));
-						context.getSource().sendFeedback(Text.of("§e/signscribe sign§r - Jump to current sign"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe load§r - Load all .txth files from config/signscribe/txth and open file picker"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe next§r - Advance to the next sign in the loaded file"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe prev§r - Go to the previous sign"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe status§r - Display current session information including file name and progress"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe stop§r - End the current placement session"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe sign§r - Jump to the current sign position"));
+						context.getSource().sendFeedback(Text.of("§e/signscribe help§r - Show this help message"));
 						return 1;
 					})
-					.then(ClientCommandManager.argument("command", ClientCommandManager.string())
-						.executes(context -> {
-							String commandName = context.getArgument("command", String.class).toLowerCase();
-							switch (commandName) {
-								case "on":
-									context.getSource().sendFeedback(Text.of("§e/signscribe on§r - Enable the mod for automatic sign text placement"));
-									break;
-								case "off":
-									context.getSource().sendFeedback(Text.of("§e/signscribe off§r - Disable the mod"));
-									break;
-								case "load":
-									context.getSource().sendFeedback(Text.of("§e/signscribe load§r - Load all .txth files from config/signscribe/txth and open file picker"));
-									break;
-								case "next":
-									context.getSource().sendFeedback(Text.of("§e/signscribe next§r - Advance to the next sign in the loaded file"));
-									break;
-								case "prev":
-									context.getSource().sendFeedback(Text.of("§e/signscribe prev§r - Go to the previous sign"));
-									break;
-								case "status":
-									context.getSource().sendFeedback(Text.of("§e/signscribe status§r - Display current session information including file name and progress"));
-									break;
-								case "stop":
-									context.getSource().sendFeedback(Text.of("§e/signscribe stop§r - End the current placement session"));
-									break;
-								case "sign":
-									context.getSource().sendFeedback(Text.of("§e/signscribe sign§r - Jump to the current sign position"));
-									break;
-								default:
-									context.getSource().sendError(Text.of("§cUnknown command: " + commandName + ". Use /signscribe help"));
-									break;
-							}
-							return 1;
-						})
-					)
 				)
 				.then(ClientCommandManager.literal("load")
 					.executes(context -> {
@@ -125,10 +91,10 @@ public class SignScribeCommands {
 						System.out.println("[SignScribe DEBUG] /signscribe next executed");
 						try {
 							SignScribePlacement.getInstance().advanceToNextPage();
-							context.getSource().sendFeedback(Text.of("Advanced to next page"));
+							context.getSource().sendFeedback(Text.of("§aAdvanced to next page"));
 							return 1;
 						} catch (IOException e) {
-							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
+							context.getSource().sendError(Text.of("§cError: " + e.getMessage()));
 							return 0;
 						}
 					})
@@ -138,19 +104,19 @@ public class SignScribeCommands {
 						System.out.println("[SignScribe DEBUG] /signscribe prev executed");
 						SignScribePlacement placement = SignScribePlacement.getInstance();
 						if (!placement.hasSession()) {
-							context.getSource().sendError(Text.of("No active session"));
+							context.getSource().sendError(Text.of("§cNo active session"));
 							return 0;
 						}
 						if (!placement.hasPreviousPage()) {
-							context.getSource().sendError(Text.of("No previous page"));
+							context.getSource().sendError(Text.of("§cNo previous page"));
 							return 0;
 						}
 						try {
 							placement.goToPage(placement.getCurrentPageIndex() - 1);
-							context.getSource().sendFeedback(Text.of("Went to previous page"));
+							context.getSource().sendFeedback(Text.of("§aWent to previous page"));
 							return 1;
 						} catch (IOException e) {
-							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
+							context.getSource().sendError(Text.of("§cError: " + e.getMessage()));
 							return 0;
 						}
 					})
@@ -168,7 +134,7 @@ public class SignScribeCommands {
 							);
 							context.getSource().sendFeedback(Text.of(status));
 						} else {
-							context.getSource().sendFeedback(Text.of("No active session"));
+							context.getSource().sendFeedback(Text.of("§cNo active session"));
 						}
 						return 1;
 					})
@@ -177,15 +143,15 @@ public class SignScribeCommands {
 					.executes(context -> {
 						System.out.println("[SignScribe DEBUG] /signscribe stop executed");
 						if (!SignScribePlacement.getInstance().hasSession()) {
-							context.getSource().sendError(Text.of("No active session"));
+							context.getSource().sendError(Text.of("§cNo active session"));
 							return 0;
 						}
 						try {
 							SignScribePlacement.getInstance().endSession();
-							context.getSource().sendFeedback(Text.of("Session stopped"));
+							context.getSource().sendFeedback(Text.of("§aSession stopped"));
 							return 1;
 						} catch (IOException e) {
-							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
+							context.getSource().sendError(Text.of("§cError: " + e.getMessage()));
 							return 0;
 						}
 					})
@@ -195,7 +161,7 @@ public class SignScribeCommands {
 						System.out.println("[SignScribe DEBUG] /signscribe sign executed");
 						SignScribePlacement placement = SignScribePlacement.getInstance();
 						if (!placement.hasSession()) {
-							context.getSource().sendError(Text.of("No active session"));
+							context.getSource().sendError(Text.of("§cNo active session"));
 							return 0;
 						}
 						try {
@@ -203,7 +169,7 @@ public class SignScribeCommands {
 							context.getSource().sendFeedback(Text.of("§aJumped to current sign"));
 							return 1;
 						} catch (IOException e) {
-							context.getSource().sendError(Text.of("Error: " + e.getMessage()));
+							context.getSource().sendError(Text.of("§cError: " + e.getMessage()));
 							return 0;
 						}
 					})
