@@ -2,16 +2,18 @@
 
 This is the first alpha release of SignScribe, a Minecraft Fabric mod for easily applying pre-formatted text to signs.
 
+**IMPORTANT: This is an alpha release.** The mod is in early development and may contain bugs or incomplete features. Use at your own risk.
+
 ## What's Included
 
-### Phase 1: Project Setup ✅
+### Phase 1: Project Setup
 - Complete Fabric mod project structure
 - Configured for Minecraft 1.21.x
 - Fabric API and ModMenu integration
 - Gradle build system
 
-### Phase 2: File Format & Parsing ✅
-- **.txth file parser** with full validation
+### Phase 2: File Format & Parsing
+- .txth file parser with full validation
 - SignPage data model (4 lines per sign)
 - TxthParseException for detailed error reporting
 - Test suite with 4 test scenarios
@@ -39,13 +41,13 @@ who loved to write
 2. Place in your Minecraft `mods` folder
 3. Requires Minecraft 1.21, Fabric Loader, and Fabric API
 
-## Limitations
+## Current Limitations
 
 This is an alpha release. Only file parsing is implemented:
-- ❌ No sign placement functionality yet
-- ❌ No GUI for loading files
-- ❌ No commands
-- ❌ No ModMenu configuration
+- No sign placement functionality yet
+- No GUI for loading files
+- No commands
+- No ModMenu configuration
 
 ## Testing
 
@@ -56,11 +58,23 @@ File parsing has been tested with:
 - Line count validation
 - Line length validation
 
+## Known Issues
+
+As an alpha release, you may encounter:
+- Unexpected behavior
+- Missing features
+- Unimplemented functionality
+- Breaking changes between versions
+
 ## License
 
 ALL RIGHTS RESERVED - Private use only
 
----
+## Status
 
-**Status:** Phase 1 & 2 complete (21/120 total tasks)
-**Next:** Phase 3 - Data Storage & Configuration
+Phase 1 & 2 complete (21/120 total tasks)
+Next: Phase 3 - Data Storage & Configuration
+
+## Support
+
+Report issues on GitHub issues page
