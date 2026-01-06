@@ -6,17 +6,17 @@
 **Previous Version:** v1.0.0-alpha4.1
 **Type:** Critical Bug Fix & Feature Update
 
----
+**IMPORTANT: This is an alpha release.** The mod is in early development and may contain bugs or incomplete features. Use at your own risk.
 
-## 🐛 Critical Bug Fixes
+## Critical Bug Fixes
 
 ### 1. Fixed Sign Placement Crash (CRITICAL)
 
 **Issue:** Game crashed immediately after placing any sign with a class-related error.
 
 **Root Cause:** The code attempted to use incorrect SignText API methods for Minecraft 1.21.x. In Minecraft 1.21+, sign text handling changed significantly:
-- Old system: `signEntity.setMessage(int, Text)` - Removed
-- New system: `signEntity.getFrontText().withMessage(int, Text)` - Required
+- Old system: signEntity.setMessage(int, Text) - Removed
+- New system: signEntity.getFrontText().withMessage(int, Text) - Required
 
 **Original Code (Broken):**
 ```java
@@ -59,33 +59,31 @@ if (player.getWorld().getBlockEntity(pos) instanceof SignBlockEntity signEntity)
 
 **Impact:** Proper type checking and safe casting.
 
----
-
-## ✨ New Features
+## New Features
 
 ### 1. Custom File Path Input GUI
 
 **Overview:** Completely redesigned file loading experience with flexible path support.
 
-**Command:** `/signscribe open` now opens a new GUI screen with:
+**Command:** /signscribe open now opens a new GUI screen with:
 
 #### GUI Features:
-1. **Text Field Input**
+1. Text Field Input
    - Supports pasting custom file paths
    - 256 character maximum
    - Placeholder text shows examples
 
-2. **Load File Button**
+2. Load File Button
    - Validates and loads the specified path
    - Shows on-screen error messages if file not found
    - Displays parse errors for invalid .txth files
 
-3. **Browse Files Button**
+3. Browse Files Button
    - Opens the traditional file list GUI
    - Shows all available .txth files in config directory
    - Allows clicking to select a file
 
-4. **Cancel Button**
+4. Cancel Button
    - Returns to previous screen
    - Keyboard shortcut: ESC key
 
@@ -93,9 +91,9 @@ if (player.getWorld().getBlockEntity(pos) instanceof SignBlockEntity signEntity)
 
 | Path Format | Example | Description |
 |-------------|----------|-------------|
-| Simple filename | `story.txth` | Loads from `config/signscribe/txth/` |
-| Full relative | `config/signscribe/txth/adventure.txth` | Path from config directory |
-| Absolute | `/config/signscribe/txth/myfile.txth` | Root-relative path |
+| Simple filename | story.txth | Loads from config/signscribe/txth/ |
+| Full relative | config/signscribe/txth/adventure.txth | Path from config directory |
+| Absolute | /config/signscribe/txth/myfile.txth | Root-relative path |
 
 #### User Experience Improvements:
 - Clear placeholder text: "e.g., config/signscribe/txth/story.txth or story.txth"
@@ -103,11 +101,9 @@ if (player.getWorld().getBlockEntity(pos) instanceof SignBlockEntity signEntity)
 - Example formats shown below text field
 - Visual feedback when file loads successfully
 
-**New File:** `SignScribePathScreen.java` (206 lines)
+**New File:** SignScribePathScreen.java (206 lines)
 
----
-
-## 📋 Technical Changes
+## Technical Changes
 
 ### Sign Text Update System
 
@@ -120,19 +116,19 @@ SignBlockEntity
 ```
 
 **SignText Methods:**
-- `withMessage(int line, Text message)` - Creates new SignText with updated line
-- `setText(SignText, boolean front)` - Updates SignBlockEntity text
+- withMessage(int line, Text message) - Creates new SignText with updated line
+- setText(SignText, boolean front) - Updates SignBlockEntity text
 
 **Update Flow:**
-1. Get current front text: `signEntity.getFrontText()`
-2. Apply each line update: `withMessage(lineIndex, newText)`
-3. Set updated text back: `signEntity.setText(frontText, true)`
-4. Mark dirty for sync: `signEntity.markDirty()`
-5. Send packet to server: `UpdateSignC2SPacket`
+1. Get current front text: signEntity.getFrontText()
+2. Apply each line update: withMessage(lineIndex, newText)
+3. Set updated text back: signEntity.setText(frontText, true)
+4. Mark dirty for sync: signEntity.markDirty()
+5. Send packet to server: UpdateSignC2SPacket
 
 ### File Path Resolution
 
-**New Method:** `SignScribeFileManager.resolveTxthPath(String path)`
+**New Method:** SignScribeFileManager.resolveTxthPath(String path)
 
 **Logic:**
 ```java
@@ -161,23 +157,21 @@ return getTxthDirectory().resolve(path);
 - Backward compatible with existing file lists
 - Clear error messages for invalid paths
 
----
-
-## 📦 Files Modified
+## Files Modified
 
 ### Modified Files
 
 | File | Lines Changed | Description |
 |-------|--------------|-------------|
-| `SignPlacementEventHandler.java` | +25, -26 | Fixed sign text updates using correct 1.21 API |
-| `SignScribeFileManager.java` | +13, -3 | Added `resolveTxthPath()` method for flexible paths |
-| `SignScribeCommands.java` | +6, -4 | Updated `/open` command to use new path screen |
+| SignPlacementEventHandler.java | +25, -26 | Fixed sign text updates using correct 1.21 API |
+| SignScribeFileManager.java | +13, -3 | Added resolveTxthPath() method for flexible paths |
+| SignScribeCommands.java | +6, -4 | Updated /open command to use new path screen |
 
 ### New Files
 
 | File | Size | Description |
 |------|-------|-------------|
-| `SignScribePathScreen.java` | 206 lines | New GUI with text field for custom file paths |
+| SignScribePathScreen.java | 206 lines | New GUI with text field for custom file paths |
 
 ### Statistics
 - Total files changed: 4
@@ -185,87 +179,77 @@ return getTxthDirectory().resolve(path);
 - Lines removed: 33
 - Net change: +11 lines (plus 206 lines in new file)
 
----
-
-## 🚀 Installation
+## Installation
 
 ### Requirements
-- **Minecraft:** 1.21 or any 1.21.x (1.21, 1.21.1, 1.21.5, 1.21.11, etc.)
-- **Java:** 21+
-- **Fabric Loader:** 0.15.11+
-- **Fabric API:** 0.100.4+1.21 (or newer)
+- Minecraft: 1.21 or any 1.21.x (1.21, 1.21.1, 1.21.5, 1.21.11, etc.)
+- Java: 21+
+- Fabric Loader: 0.15.11+
+- Fabric API: 0.100.4+1.21 (or newer)
 
 ### Download
 **Release URL:** https://github.com/RZZW304/SignScribe/releases/tag/v1.0.0-alpha5
 
 ### Install
-1. Download `SignScribe-1.0.0-alpha5.jar`
-2. Place in `.minecraft/mods/`
+1. Download SignScribe-1.0.0-alpha5.jar
+2. Place in .minecraft/mods/
 3. Launch Minecraft
-4. Enjoy working sign placement! ✅
+4. Enjoy working sign placement
 
----
+## Migration from Alpha 4.1
 
-## ⚠️ Migration from Alpha 4.1
-
-### No Migration Required!
-Simply replace `SignScribe-1.0.0-alpha4.1.jar` with `SignScribe-1.0.0-alpha5.jar`
+### No Migration Required
+Simply replace SignScribe-1.0.0-alpha4.1.jar with SignScribe-1.0.0-alpha5.jar
 
 ### Data Compatibility
-- All existing `.txth` files work unchanged
-- Session data (`config/signscribe/data.dat`) is compatible
+- All existing .txth files work unchanged
+- Session data (config/signscribe/data.dat) is compatible
 - Templates and settings remain valid
 - Configuration options preserved
-- **Zero manual migration steps needed**
+- Zero manual migration steps needed
 
----
-
-## 🧪 Testing
+## Testing
 
 ### Test Environment
-- **Minecraft:** 1.21.5
-- **Fabric Loader:** 0.18.4
-- **Fabric API:** 0.128.2+1.21.5
-- **Java:** 21.0.7
-- **OS:** Linux (Ubuntu)
+- Minecraft: 1.21.5
+- Fabric Loader: 0.18.4
+- Fabric API: 0.128.2+1.21.5
+- Java: 21.0.7
+- OS: Linux (Ubuntu)
 
 ### Test Results
 
 #### Sign Placement
-✅ Signs can be placed without crashes
-✅ Sign text updates correctly on client side
-✅ Sign text syncs to server
-✅ Multiple signs can be placed sequentially
-✅ Progress messages appear in chat
+- Signs can be placed without crashes
+- Sign text updates correctly on client side
+- Sign text syncs to server
+- Multiple signs can be placed sequentially
+- Progress messages appear in chat
 
 #### File Loading
-✅ `/signscribe open` opens path input GUI
-✅ Simple filenames load correctly: `story.txth`
-✅ Full paths load correctly: `config/signscribe/txth/adventure.txth`
-✅ Absolute paths work: `/config/signscribe/txth/myfile.txth`
-✅ Browse Files button shows file list
-✅ Error messages display on-screen
-✅ Invalid paths show descriptive error messages
+- /signscribe open opens path input GUI
+- Simple filenames load correctly: story.txth
+- Full paths load correctly: config/signscribe/txth/adventure.txth
+- Absolute paths work: /config/signscribe/txth/myfile.txth
+- Browse Files button shows file list
+- Error messages display on-screen
+- Invalid paths show descriptive error messages
 
 #### Existing Features
-✅ All commands from Alpha 4.1 work unchanged
-✅ ModMenu config screen functional
-✅ Session management working
-✅ Auto-advance to next sign working
+- All commands from Alpha 4.1 work unchanged
+- ModMenu config screen functional
+- Session management working
+- Auto-advance to next sign working
 
 ### Known Issues
 None detected in this release.
 
----
-
-## 🔄 Breaking Changes
+## Breaking Changes
 
 ### None
 This is a bug fix and feature enhancement release with no breaking API changes.
 
----
-
-## 📞 Support
+## Support
 
 ### Found a Bug?
 Report it at: https://github.com/RZZW304/SignScribe/issues
@@ -273,25 +257,21 @@ Report it at: https://github.com/RZZW304/SignScribe/issues
 ### Feature Requests?
 Submit suggestions at: https://github.com/RZZW304/SignScribe/issues
 
----
-
-## 🙏 Credits
+## Credits
 
 **Developer:** RZZW304
 **Version:** v1.0.0-alpha5
 **License:** ALL RIGHTS RESERVED - Private use only
 
----
-
-## 📊 Project Status
+## Project Status
 
 ### Completed Phases
-- ✅ Phase 1: Project Setup
-- ✅ Phase 2: File Format & Parsing
-- ✅ Phase 3: Data Storage & Configuration
-- ✅ Phase 4: Sign Placement Logic (with 1.21 API fixes)
-- ✅ Phase 5: Advanced Features & Data Management
-- ✅ Phase 6: Bug Fixes & UX Improvements
+- Phase 1: Project Setup
+- Phase 2: File Format & Parsing
+- Phase 3: Data Storage & Configuration
+- Phase 4: Sign Placement Logic (with 1.21 API fixes)
+- Phase 5: Advanced Features & Data Management
+- Phase 6: Bug Fixes & UX Improvements
 
 ### Next Milestones
 - Phase 7: Enhanced GUI features
@@ -299,6 +279,4 @@ Submit suggestions at: https://github.com/RZZW304/SignScribe/issues
 - Phase 9: Python formatter app
 - Phase 10: Full documentation
 
----
-
-**Thanks for using SignScribe! Sign placement is now fully functional! 🎉**
+Thank you for testing SignScribe v1.0.0 Alpha 5. Sign placement is now fully functional
