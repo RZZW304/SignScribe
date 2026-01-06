@@ -2,11 +2,13 @@ package com.signscribe;
 
 import com.signscribe.command.SignScribeCommands;
 import com.signscribe.handler.SignPlacementEventHandler;
+import com.signscribe.SignScribeConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 import java.nio.file.Path;
 
- public class SignScribeClient implements ClientModInitializer {
+public class SignScribeClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		System.out.println("[SignScribe] ===== INITIALIZING =====");
@@ -36,6 +38,7 @@ import java.nio.file.Path;
 
 		SignScribeCommands.register();
 		SignPlacementEventHandler.register();
+		SignPlacementEventHandler.setClient(MinecraftClient.getInstance());
 		System.out.println("[SignScribe] ===== INITIALIZATION COMPLETE =====");
 	}
 }

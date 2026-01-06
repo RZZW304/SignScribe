@@ -3,6 +3,7 @@ package com.signscribe.handler;
 import com.signscribe.SignPage;
 import com.signscribe.SignScribePlacement;
 import com.signscribe.SignScribeConfig;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.SignBlock;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -10,24 +11,29 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
 
 public class SignPlacementEventHandler {
 
-	private static boolean processingSign = false;
-	private static BlockPos lastSignPos = null;
-	private static SignPage lastSignPage = null;
+	private static final ThreadLocal<SignBlockEntity> lastSignEntity = new ThreadLocal<>();
+	private static MinecraftClient client = null;
 
 	public static void register() {
 		System.out.println("[SignScribe] ===== Registering SignPlacementEventHandler =====");
 
+		registerUseBlockCallback();
+		registerBlockEntityCallback();
+
+		System.out.println("[SignScribe] ===== Handler registration complete =====");
+	}
+
+	public static void setClient(MinecraftClient client) {
+		System.out.println("[SignScribe DEBUG] Client set to: " + client);
+		SignPlacementEventHandler.client = client;
+	}
+
+	private static void registerUseBlockCallback() {
 		UseBlockCallback.EVENT.register((player, world, hand, hit) -> {
 			System.out.println("[SignScribe DEBUG] UseBlockCallback fired");
-
-			if (processingSign) {
-				System.out.println("[SignScribe DEBUG] Already processing a sign, passing");
-				return ActionResult.PASS;
-			}
 
 			if (!world.isClient()) {
 				System.out.println("[SignScribe DEBUG] Not on client, passing");
@@ -44,20 +50,6 @@ public class SignPlacementEventHandler {
 				return ActionResult.PASS;
 			}
 
-			SignPage currentPage = SignScribePlacement.getInstance().getCurrentSignPage();
-			if (currentPage == null) {
-				System.out.println("[SignScribe DEBUG] Current page is null, passing");
-				return ActionResult.PASS;
-			}
-
-			var pos = hit.getBlockPos();
-			var state = player.getWorld().getBlockState(pos);
-
-			if (!(state.getBlock() instanceof SignBlock)) {
-				System.out.println("[SignScribe DEBUG] Not a sign block, passing");
-				return ActionResult.PASS;
-			}
-
 			if (SignScribeConfig.getInstance().requireEmptyHand) {
 				if (!player.getStackInHand(hand).isEmpty()) {
 					System.out.println("[SignScribe DEBUG] Hand not empty, passing");
@@ -65,73 +57,88 @@ public class SignPlacementEventHandler {
 				}
 			}
 
-			System.out.println("[SignScribe DEBUG] Sign detected at " + pos + ", scheduling update");
+			var pos = hit.getBlockPos();
+			var state = player.getWorld().getBlockState(pos);
 
-			lastSignPos = pos;
-			lastSignPage = currentPage;
+			System.out.println("[SignScribe DEBUG] Block at " + pos + " is " + state.getBlock());
 
-			processingSign = true;
-			try {
-				MinecraftClient client = MinecraftClient.getInstance();
-				client.execute(() -> {
-					try {
-						updateSignText(lastSignPos, lastSignPage);
+			if (state.getBlock() instanceof SignBlock) {
+				System.out.println("[SignScribe DEBUG] Existing sign detected, applying text");
+				applySignText(pos);
+			}
 
-						int current = SignScribePlacement.getInstance().getCurrentPageIndex() + 1;
-						int total = SignScribePlacement.getInstance().getTotalSigns();
-						
-						if (client.player != null) {
-							client.player.sendMessage(Text.of("§a[SignScribe] Sign " + current + "/" + total + " placed"), true);
-						}
+			return ActionResult.PASS;
+		});
+	}
 
-						try {
-							SignScribePlacement.getInstance().advanceToNextPage();
-							System.out.println("[SignScribe DEBUG] Advanced to next page");
-						} catch (Exception e) {
-							System.err.println("[SignScribe ERROR] Error advancing page: " + e.getMessage());
-							e.printStackTrace();
-						}
-					} catch (Exception e) {
-						System.err.println("[SignScribe ERROR] Error in delayed update: " + e.getMessage());
-						e.printStackTrace();
-					} finally {
-						processingSign = false;
-					}
-				});
+	private static void registerBlockEntityCallback() {
+		ClientBlockEntityEvents.BLOCK_ENTITY_LOAD.register((blockEntity, world) -> {
+			if (!SignScribeConfig.getInstance().enabled) {
+				return;
+			}
 
-				return ActionResult.PASS;
-			} catch (Exception e) {
-				System.err.println("[SignScribe ERROR] Error processing sign: " + e.getMessage());
-				e.printStackTrace();
-				processingSign = false;
-				return ActionResult.PASS;
+			if (!SignScribePlacement.getInstance().hasSession()) {
+				return;
+			}
+
+			if (blockEntity instanceof SignBlockEntity signEntity) {
+				System.out.println("[SignScribe DEBUG] SignBlockEntity loaded at: " + blockEntity.getPos());
+				lastSignEntity.set(signEntity);
+				applySignText(blockEntity.getPos());
 			}
 		});
 	}
 
-	private static void updateSignText(BlockPos pos, SignPage page) {
+	private static void applySignText(net.minecraft.util.math.BlockPos pos) {
 		try {
-			System.out.println("[SignScribe DEBUG] Updating sign at: " + pos);
-			
-			MinecraftClient client = MinecraftClient.getInstance();
-			if (client.getNetworkHandler() == null) {
-				System.err.println("[SignScribe ERROR] NetworkHandler is null!");
+			SignPage currentPage = SignScribePlacement.getInstance().getCurrentSignPage();
+
+			if (currentPage == null) {
+				System.out.println("[SignScribe DEBUG] Current page is null, not applying text");
 				return;
 			}
 
-			System.out.println("[SignScribe DEBUG] Sending UpdateSignC2SPacket (packet-only approach)");
-			
-			net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket packet = 
-				new net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket(
-					pos, true, 
-					page.getLine(0), page.getLine(1), page.getLine(2), page.getLine(3)
-				);
-			
-			client.getNetworkHandler().sendPacket(packet);
-			System.out.println("[SignScribe DEBUG] Packet sent successfully");
+			System.out.println("[SignScribe DEBUG] Applying page to sign at: " + pos);
 
+			MinecraftClient mc = client != null ? client : MinecraftClient.getInstance();
+			
+			if (mc == null || mc.getNetworkHandler() == null) {
+				System.err.println("[SignScribe ERROR] Client or NetworkHandler is null!");
+				return;
+			}
+
+			mc.execute(() -> {
+				try {
+					net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket packet =
+						new net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket(
+							pos,
+							true,
+							currentPage.getLine(0),
+							currentPage.getLine(1),
+							currentPage.getLine(2),
+							currentPage.getLine(3)
+						);
+
+					mc.getNetworkHandler().sendPacket(packet);
+					System.out.println("[SignScribe DEBUG] Sign update packet sent");
+
+					SignScribePlacement.getInstance().advanceToNextPage();
+					System.out.println("[SignScribe DEBUG] Advanced to next page");
+
+					int current = SignScribePlacement.getInstance().getCurrentPageIndex() + 1;
+					int total = SignScribePlacement.getInstance().getTotalSigns();
+
+					if (mc.player != null) {
+						mc.player.sendMessage(Text.of("§a[SignScribe] Sign " + current + "/" + total + " placed"), true);
+						System.out.println("[SignScribe DEBUG] Sent chat message: Sign " + current + "/" + total + " placed");
+					}
+				} catch (Exception e) {
+					System.err.println("[SignScribe ERROR] Error in applySignText: " + e.getMessage());
+					e.printStackTrace();
+				}
+			});
 		} catch (Exception e) {
-			System.err.println("[SignScribe ERROR] Error updating sign text: " + e.getMessage());
+			System.err.println("[SignScribe ERROR] Error applying sign text: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
