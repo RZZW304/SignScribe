@@ -5,37 +5,35 @@
 **Java Version:** 21
 **Previous Version:** v1.0.0-alpha3
 
----
+**IMPORTANT: This is an alpha release.** The mod is in early development and may contain bugs or incomplete features. Use at your own risk.
 
-## 🎉 Phase 4 Complete: Sign Placement + Phase 5 Complete: Advanced Features
+## Phase 4 Complete: Sign Placement + Phase 5 Complete: Advanced Features
 
 This release adds functional sign placement logic PLUS comprehensive data management, templates, batch operations, and powerful analytics to SignScribe.
 
----
+## New Features
 
-## ✨ New Features
-
-### Phase 4: Sign Placement ✅
-- **SignPlacementEventHandler** - Real sign placement in world:
+### Phase 4: Sign Placement
+- SignPlacementEventHandler - Real sign placement in world:
   - Right-click any sign to auto-apply text from loaded .txth file
   - Cancel default sign edit GUI when session is active
   - Auto-advance to next sign on subsequent placements
   - Support for all sign types (oak, birch, spruce, etc.)
-  - Progress notifications: "§a[SignScribe] Sign X/Y placed"
+  - Progress notifications in chat
   - Server synchronization via UpdateSignC2SPacket
   - Java reflection workaround for Minecraft 1.21 API compatibility
 
 ### Phase 5: Advanced Features
 
 ### Template System
-- **SignTemplate** - Reusable sign text layouts:
+- SignTemplate - Reusable sign text layouts:
   - Save frequently used sign text patterns
   - Author tracking for templates
   - Usage statistics (how many times used)
   - Timestamp tracking (created/last used)
   - Easy serialization for storage
 
-- **SignTemplateManager** - Template collection management:
+- SignTemplateManager - Template collection management:
   - Store templates in config/signscribe/templates/
   - Properties file format (.template extension)
   - Load/save/delete templates
@@ -44,13 +42,13 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Most used and recently used queries
 
 ### Session Templates
-- **SessionTemplate** - Complete .txth file configurations:
+- SessionTemplate - Complete .txth file configurations:
   - Save entire story layouts as templates
   - Preview first 4 lines for quick reference
   - ZIP file format with metadata
   - Export/import capabilities
 
-- **SessionTemplateManager** - Session template storage:
+- SessionTemplateManager - Session template storage:
   - Store in config/signscribe/session_templates/
   - ZIP-based template files
   - Preview text included
@@ -58,7 +56,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Sort by usage or recent
 
 ### Import/Export System
-- **ImportExportManager** - Data transfer capabilities:
+- ImportExportManager - Data transfer capabilities:
   - Export current session to ZIP (session.dat + .txth)
   - Import sessions from ZIP (restores all state)
   - Export all templates to ZIP
@@ -67,7 +65,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - ZIP format for easy sharing
 
 ### Advanced File Filtering
-- **TxthFileFilter** - Powerful .txth file management:
+- TxthFileFilter - Powerful .txth file management:
   - Filter by name (partial or exact match)
   - Filter by extension
   - Filter by creation/modification date
@@ -79,7 +77,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Human-readable file sizes (B/KB/MB)
 
 ### Batch Operations
-- **BatchOperations** - Bulk file management:
+- BatchOperations - Bulk file management:
   - Batch rename multiple files
   - Batch delete multiple files
   - Batch copy multiple files
@@ -90,7 +88,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Summary reports for operations
 
 ### Session History
-- **SessionHistoryManager** - Complete session tracking:
+- SessionHistoryManager - Complete session tracking:
   - Log all sessions to session_history.log
   - Track filename, signs placed, duration
   - Timestamp for each session
@@ -101,7 +99,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Per-file statistics
 
 ### Statistics & Metrics
-- **SignScribeStatistics** - Comprehensive analytics:
+- SignScribeStatistics - Comprehensive analytics:
   - General mod statistics (files, size, templates)
   - File analysis (valid/invalid counts)
   - Usage statistics (sessions, signs, time)
@@ -110,7 +108,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Formatted reports for export
 
 ### Backup/Restore System
-- **BackupRestoreManager** - Complete data backup:
+- BackupRestoreManager - Complete data backup:
   - Full backup to ZIP file:
     - All .txth files
     - All sign templates
@@ -123,9 +121,7 @@ This release adds functional sign placement logic PLUS comprehensive data manage
   - Automatic metadata inclusion
   - Timestamped backup filenames
 
----
-
-## 📁 Directory Structure
+## Directory Structure
 
 ```
 config/signscribe/
@@ -143,9 +139,7 @@ config/signscribe/
 └── signscribe.properties      # Configuration
 ```
 
----
-
-## 🔧 Technical Improvements
+## Technical Improvements
 
 ### Data Persistence
 - Multiple storage formats optimized for use case:
@@ -168,9 +162,7 @@ config/signscribe/
 - Comprehensive data structures
 - Easy to extend with new features
 
----
-
-## 📊 Statistics Tracking
+## Statistics Tracking
 
 ### Now Tracked
 - Total .txth files
@@ -186,16 +178,14 @@ config/signscribe/
 - Average session duration
 - Average signs per session
 
----
-
-## 🗺️ Roadmap
+## Roadmap
 
 ### Completed Phases
-- ✅ Phase 1: Project Setup
-- ✅ Phase 2: File Format & Parsing
-- ✅ Phase 3: Data Storage & Configuration
-- ✅ Phase 4: Sign Placement Logic (with 1.21 API compatibility)
-- ✅ Phase 5: Advanced Features & Data Management
+- Phase 1: Project Setup
+- Phase 2: File Format & Parsing
+- Phase 3: Data Storage & Configuration
+- Phase 4: Sign Placement Logic (with 1.21 API compatibility)
+- Phase 5: Advanced Features & Data Management
 
 ### Phase 6 Planning
 - Fix Phase 4 API compatibility issues
@@ -205,14 +195,12 @@ config/signscribe/
 - Real-time statistics dashboard
 
 ### Remaining Tasks
-- **Total:** 120 tasks
-- **Completed:** 37 tasks (31%)
-- **Remaining:** 83 tasks (69%)
-- **Next Priority:** Fix Minecraft 1.21 API for Phase 4
+- Total: 120 tasks
+- Completed: 37 tasks (31%)
+- Remaining: 83 tasks (69%)
+- Next Priority: Fix Minecraft 1.21 API for Phase 4
 
----
-
-## 📖 Usage
+## Usage
 
 ### Using Templates
 ```
@@ -260,79 +248,75 @@ config/signscribe/
    - Keeps last 7 days, removes older
 ```
 
----
-
-## 🔄 Changes from Alpha 3
+## Changes from Alpha 3
 
 ### Added (Phase 4)
-- ✅ SignPlacementEventHandler with UseBlockCallback
-- ✅ Right-click sign interaction
-- ✅ Automatic text application from .txth files
-- ✅ Auto-advance to next sign
-- ✅ Progress notifications in chat
-- ✅ Reflection-based API compatibility for 1.21
-- ✅ Server packet synchronization
+- SignPlacementEventHandler with UseBlockCallback
+- Right-click sign interaction
+- Automatic text application from .txth files
+- Auto-advance to next sign
+- Progress notifications in chat
+- Reflection-based API compatibility for 1.21
+- Server packet synchronization
 
 ### Added (Phase 5)
-- ✅ Sign template system
-- ✅ Session template system
-- ✅ Import/export manager (ZIP format)
-- ✅ Advanced file filtering (TxthFileFilter)
-- ✅ Batch operations utility
-- ✅ Session history manager
-- ✅ Statistics and metrics
-- ✅ Backup/restore system
+- Sign template system
+- Session template system
+- Import/export manager (ZIP format)
+- Advanced file filtering (TxthFileFilter)
+- Batch operations utility
+- Session history manager
+- Statistics and metrics
+- Backup/restore system
 
 ### File Structure
 - Added config/signscribe/templates/
 - Added config/signscribe/session_templates/
 - Added config/signscribe/session_history.log
 
----
-
-## ⚠️ Known Limitations
+## Known Limitations
 
 ### Not Implemented (Future Phases)
-- ❌ ModMenu configuration GUI (Phase 6)
-- ❌ Keybinds for quick navigation (Phase 6)
-- ❌ Undo/redo for sign placement (Phase 6)
-- ❌ External Python formatter app (Phase 7+)
-- ❌ Full documentation (README with usage examples)
+- ModMenu configuration GUI (Phase 6)
+- Keybinds for quick navigation (Phase 6)
+- Undo/redo for sign placement (Phase 6)
+- External Python formatter app (Phase 7+)
+- Full documentation (README with usage examples)
 
 ### Current Capabilities
-- ✅ Phase 1-3: Fully functional
-- ✅ Phase 4: Fully functional (sign placement working)
-- ✅ Phase 5: Fully functional
-- ✅ All core features working together
-- ✅ Comprehensive data management
+- Phase 1-3: Fully functional
+- Phase 4: Fully functional (sign placement working)
+- Phase 5: Fully functional
+- All core features working together
+- Comprehensive data management
 
----
+## Known Issues
 
-## 🐛 Bug Reports
+As an alpha release, you may encounter:
+- Unexpected behavior with sign placement
+- API compatibility issues with some Minecraft versions
+- Performance issues with large numbers of files
+- Breaking changes between versions
+
+## Bug Reports
 
 Found a bug? Report it at:
 https://github.com/RZZW304/SignScribe/issues
 
----
+## Credits
 
-## 🙏 Credits
+Development: RZZW304
+Version: v1.0.0-alpha4
+License: ALL RIGHTS RESERVED - Private use only
 
-**Development:** RZZW304
-**Version:** v1.0.0-alpha4
-**License:** ALL RIGHTS RESERVED - Private use only
+## Installation
 
----
-
-## 📦 Installation
-
-1. Download `SignScribe-1.0.0-alpha4.jar`
-2. Place in `.minecraft/mods/`
+1. Download SignScribe-1.0.0-alpha4.jar
+2. Place in .minecraft/mods/
 3. Launch Minecraft 1.21 with Fabric Loader 0.15.11+
 4. Required: Fabric API 0.100.4+1.21
 
----
+Thank you for testing SignScribe v1.0.0 Alpha 4
 
-**Enjoy SignScribe v1.0.0 Alpha 4! 🎉**
-
-*Phase 4 complete! Sign placement is now fully functional.*
-*Phase 5 complete! Advanced data management features ready to use.*
+Phase 4 complete! Sign placement is now fully functional.
+Phase 5 complete! Advanced data management features ready to use.
